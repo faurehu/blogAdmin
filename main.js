@@ -1,9 +1,8 @@
 var app = require('app')
 var BrowserWindow = require('browser-window');
-
 // Report crashes to our server.
 require('crash-reporter').start();
-var mainWindow = null;
+var mainWindow = null, secondWindow = null;
 
 app.on('window-all-closed', function() {
   if (process.platform != 'darwin') {
