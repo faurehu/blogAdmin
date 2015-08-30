@@ -22,7 +22,7 @@ module.exports = {
     loaders: [
       {
         test: /\.jsx?$/,
-        include: path.join(__dirname, "app/assets/javascripts"),
+        include: path.join(__dirname, "/assets/javascripts"),
         exclude: /(node_modules)/,
         loader: "babel",
         query: {
@@ -57,7 +57,7 @@ module.exports = {
     failOnError: true
   },
   plugins: [
-      new ExtractTextPlugin("style.css", { allChunks: true })
+    new ExtractTextPlugin("style.css", { allChunks: true })
   ],
   stats: {
     children: false
