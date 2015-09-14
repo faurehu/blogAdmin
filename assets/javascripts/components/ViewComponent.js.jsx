@@ -6,7 +6,7 @@ export default class ViewComponent extends React.Component {
   static propTypes = {
     title: React.PropTypes.string,
     subtitle: React.PropTypes.string,
-    text: React.PropTypes.string,
+    content: React.PropTypes.string,
     submitHandler: React.PropTypes.handleSubmit
   };
 
@@ -15,7 +15,7 @@ export default class ViewComponent extends React.Component {
     this.state = {
       title: props.title,
       subtitle: props.subtitle,
-      text: props.text
+      content: props.content
     };
   }
 
@@ -35,8 +35,8 @@ export default class ViewComponent extends React.Component {
         <input value={this.state.subtitle} className="post-subtitle" name="subtitle" type="text"
           onChange={this.handleChange.bind(null, 'subtitle')}/>
         <label htmlFor="text">Text</label>
-        <input value={this.state.text} className="post-text" name="text" type="text"
-          onChange={this.handleChange.bind(null, 'text')}/>
+        <input value={this.state.content} className="post-text" name="text" type="text"
+          onChange={this.handleChange.bind(null, 'content')}/>
         <button onClick={this.props.submitHandler.bind(null, this.state)}>Submit</button>
       </div>
     );

@@ -19,8 +19,6 @@ export default class CommentComponent extends React.Component {
   }
 
   onContainerSelect = (container) => {
-    console.log(this);
-    console.log(container);
     this.setState({
       container: container
     });
