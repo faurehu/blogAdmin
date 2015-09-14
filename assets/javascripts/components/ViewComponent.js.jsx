@@ -12,8 +12,8 @@ export default class ViewComponent extends React.Component {
 
   render() {
     return (
-      <div>
-        Hello Admin!
+      <div className="view">
+        Hello Admin! This is View Component!
       </div>
     );
   }

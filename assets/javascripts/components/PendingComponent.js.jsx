@@ -1,8 +1,8 @@
 import React from 'react/addons';
 
-export default class IndexComponent extends React.Component {
+export default class PendingComponent extends React.Component {
 
-  static displayName = 'Index';
+  static displayName = 'Pending';
   static propTypes = {};
 
   constructor(props) {
@@ -12,8 +12,8 @@ export default class IndexComponent extends React.Component {
 
   render() {
     return (
-      <div className="index">
-        Hello Admin! This is Index Component!
+      <div className="pending">
+        Hello Admin! This is Pending Component!
       </div>
     );
   }

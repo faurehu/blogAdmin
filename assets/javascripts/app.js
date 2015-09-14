@@ -1,3 +1,3 @@
-import ViewComponent from './components/ViewComponent';
+import AppComponent from './components/AppComponent';
 
-React.render(<ViewComponent />, document.body);
+React.render(<AppComponent />, document.body);

@@ -1,8 +1,8 @@
-import React from "react/addons";
+import React from 'react/addons';
 
 export default class ImagesComponent extends React.Component {
 
-  static displayName = "Images";
+  static displayName = 'Images';
   static propTypes = {};
 
   constructor(props) {
@@ -12,7 +12,9 @@ export default class ImagesComponent extends React.Component {
 
   render() {
     return (
-      <div />
+      <div className="images">
+        Hello Admin! This is Images Component!
+      </div>
     );
   }
 
