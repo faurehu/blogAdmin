@@ -154,6 +154,10 @@
 	      });
 	    };
 	
+	    this.handleNewPost = function (values) {
+	      console.log(values);
+	    };
+	
 	    this.state = {
 	      container: 'create'
 	    };
@@ -165,7 +169,7 @@
 	      var container = undefined;
 	      switch (this.state.container) {
 	        case 'create':
-	          container = _reactAddons2['default'].createElement(_ViewComponent2['default'], null);
+	          container = _reactAddons2['default'].createElement(_ViewComponent2['default'], { submitHandler: this.handleNewPost });
 	          break;
 	        case 'index':
 	          container = _reactAddons2['default'].createElement(_IndexComponent2['default'], null);
@@ -23694,6 +23698,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -23711,15 +23717,31 @@
 	    enumerable: true
 	  }, {
 	    key: "propTypes",
-	    value: {},
+	    value: {
+	      title: _reactAddons2["default"].PropTypes.string,
+	      subtitle: _reactAddons2["default"].PropTypes.string,
+	      text: _reactAddons2["default"].PropTypes.string,
+	      submitHandler: _reactAddons2["default"].PropTypes.handleSubmit
+	    },
 	    enumerable: true
 	  }]);
 	
 	  function ViewComponent(props) {
+	    var _this = this;
+	
 	    _classCallCheck(this, ViewComponent);
 	
 	    _get(Object.getPrototypeOf(ViewComponent.prototype), "constructor", this).call(this, props);
-	    this.state = {};
+	
+	    this.handleChange = function (type, e) {
+	      _this.setState(_defineProperty({}, type, e.target.value));
+	    };
+	
+	    this.state = {
+	      title: props.title,
+	      subtitle: props.subtitle,
+	      text: props.text
+	    };
 	  }
 	
 	  _createClass(ViewComponent, [{
@@ -23728,7 +23750,32 @@
 	      return _reactAddons2["default"].createElement(
 	        "div",
 	        { className: "view" },
-	        "Hello Admin! This is View Component!"
+	        _reactAddons2["default"].createElement(
+	          "label",
+	          { htmlFor: "title" },
+	          "Title"
+	        ),
+	        _reactAddons2["default"].createElement("input", { value: this.state.title, className: "post-title", name: "title", type: "text",
+	          onChange: this.handleChange.bind(null, 'title') }),
+	        _reactAddons2["default"].createElement(
+	          "label",
+	          { htmlFor: "subtitle" },
+	          "Subtitle"
+	        ),
+	        _reactAddons2["default"].createElement("input", { value: this.state.subtitle, className: "post-subtitle", name: "subtitle", type: "text",
+	          onChange: this.handleChange.bind(null, 'subtitle') }),
+	        _reactAddons2["default"].createElement(
+	          "label",
+	          { htmlFor: "text" },
+	          "Text"
+	        ),
+	        _reactAddons2["default"].createElement("input", { value: this.state.text, className: "post-text", name: "text", type: "text",
+	          onChange: this.handleChange.bind(null, 'text') }),
+	        _reactAddons2["default"].createElement(
+	          "button",
+	          { onClick: this.props.submitHandler.bind(null, this.state) },
+	          "Submit"
+	        )
 	      );
 	    }
 	  }]);
@@ -23758,6 +23805,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
@@ -23775,15 +23824,31 @@
 	    enumerable: true
 	  }, {
 	    key: "propTypes",
-	    value: {},
+	    value: {
+	      title: _reactAddons2["default"].PropTypes.string,
+	      subtitle: _reactAddons2["default"].PropTypes.string,
+	      text: _reactAddons2["default"].PropTypes.string,
+	      submitHandler: _reactAddons2["default"].PropTypes.handleSubmit
+	    },
 	    enumerable: true
 	  }]);
 	
 	  function ViewComponent(props) {
+	    var _this = this;
+	
 	    _classCallCheck(this, ViewComponent);
 	
 	    _get(Object.getPrototypeOf(ViewComponent.prototype), "constructor", this).call(this, props);
-	    this.state = {};
+	
+	    this.handleChange = function (type, e) {
+	      _this.setState(_defineProperty({}, type, e.target.value));
+	    };
+	
+	    this.state = {
+	      title: props.title,
+	      subtitle: props.subtitle,
+	      text: props.text
+	    };
 	  }
 	
 	  _createClass(ViewComponent, [{
@@ -23792,7 +23857,32 @@
 	      return _reactAddons2["default"].createElement(
 	        "div",
 	        { className: "view" },
-	        "Hello Admin! This is View Component!"
+	        _reactAddons2["default"].createElement(
+	          "label",
+	          { htmlFor: "title" },
+	          "Title"
+	        ),
+	        _reactAddons2["default"].createElement("input", { value: this.state.title, className: "post-title", name: "title", type: "text",
+	          onChange: this.handleChange.bind(null, 'title') }),
+	        _reactAddons2["default"].createElement(
+	          "label",
+	          { htmlFor: "subtitle" },
+	          "Subtitle"
+	        ),
+	        _reactAddons2["default"].createElement("input", { value: this.state.subtitle, className: "post-subtitle", name: "subtitle", type: "text",
+	          onChange: this.handleChange.bind(null, 'subtitle') }),
+	        _reactAddons2["default"].createElement(
+	          "label",
+	          { htmlFor: "text" },
+	          "Text"
+	        ),
+	        _reactAddons2["default"].createElement("input", { value: this.state.text, className: "post-text", name: "text", type: "text",
+	          onChange: this.handleChange.bind(null, 'text') }),
+	        _reactAddons2["default"].createElement(
+	          "button",
+	          { onClick: this.props.submitHandler.bind(null, this.state) },
+	          "Submit"
+	        )
 	      );
 	    }
 	  }]);

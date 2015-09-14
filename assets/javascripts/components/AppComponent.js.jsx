@@ -25,11 +25,15 @@ export default class CommentComponent extends React.Component {
     });
   }
 
+  handleNewPost = (values) => {
+    console.log(values);
+  }
+
   renderContainer() {
     let container;
     switch (this.state.container) {
       case 'create':
-        container = <ViewComponent />;
+        container = <ViewComponent submitHandler={this.handleNewPost}/>;
         break;
       case 'index':
         container = <IndexComponent />;
