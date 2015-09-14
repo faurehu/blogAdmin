@@ -147,9 +147,31 @@
 	    _get(Object.getPrototypeOf(CommentComponent.prototype), 'constructor', this).call(this, props);
 	
 	    this.onContainerSelect = function (container) {
-	      _this.setState({
-	        container: container
-	      });
+	      switch (container) {
+	        case 'create':
+	          _this.setState({
+	            container: _reactAddons2['default'].createElement(_ViewComponent2['default'], { submitHandler: _this.handlePostSubmit })
+	          });
+	          break;
+	        case 'index':
+	          _this.ipc.send('fetch-all-posts');
+	          _this.ipc.on('posts-fetched', function (arg) {
+	            _this.setState({
+	              container: _reactAddons2['default'].createElement(_IndexComponent2['default'], { posts: arg })
+	            });
+	          });
+	          break;
+	        case 'images':
+	          _this.setState({
+	            container: _reactAddons2['default'].createElement(_ImagesComponent2['default'], null)
+	          });
+	          break;
+	        case 'pending':
+	          _this.setState({
+	            container: _reactAddons2['default'].createElement(_PendingComponent2['default'], null)
+	          });
+	          break;
+	      }
 	    };
 	
 	    this.handlePostSubmit = function (values) {
@@ -161,38 +183,18 @@
 	
 	    this.ipc = global.ipc;
 	    this.state = {
-	      container: 'create'
+	      container: _reactAddons2['default'].createElement(_ViewComponent2['default'], { submitHandler: this.handlePostSubmit })
 	    };
 	  }
 	
 	  _createClass(CommentComponent, [{
-	    key: 'renderContainer',
-	    value: function renderContainer() {
-	      var container = undefined;
-	      switch (this.state.container) {
-	        case 'create':
-	          container = _reactAddons2['default'].createElement(_ViewComponent2['default'], { submitHandler: this.handlePostSubmit });
-	          break;
-	        case 'index':
-	          container = _reactAddons2['default'].createElement(_IndexComponent2['default'], null);
-	          break;
-	        case 'images':
-	          container = _reactAddons2['default'].createElement(_ImagesComponent2['default'], null);
-	          break;
-	        case 'pending':
-	          container = _reactAddons2['default'].createElement(_PendingComponent2['default'], null);
-	          break;
-	      }
-	      return container;
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _reactAddons2['default'].createElement(
 	        'div',
 	        { className: 'app' },
 	        _reactAddons2['default'].createElement(_SidebarComponent2['default'], { handler: this.onContainerSelect }),
-	        this.renderContainer()
+	        this.state.container
 	      );
 	    }
 	  }]);
@@ -23282,7 +23284,8 @@
 	      this.state.containers.forEach(function (container) {
 	        choices.push(_reactAddons2['default'].createElement(
 	          'button',
-	          { onClick: _this.props.handler.bind(null, container) },
+	          { onClick: _this.props.handler.bind(null, container),
+	            key: _this.state.containers.indexOf(container) },
 	          container
 	        ));
 	      });
@@ -23347,7 +23350,7 @@
 	      title: _reactAddons2["default"].PropTypes.string,
 	      subtitle: _reactAddons2["default"].PropTypes.string,
 	      content: _reactAddons2["default"].PropTypes.string,
-	      submitHandler: _reactAddons2["default"].PropTypes.handleSubmit
+	      submitHandler: _reactAddons2["default"].PropTypes.func
 	    },
 	    enumerable: true
 	  }]);
@@ -23439,6 +23442,10 @@
 	
 	var _reactAddons2 = _interopRequireDefault(_reactAddons);
 	
+	var _PostComponent = __webpack_require__(/*! ./PostComponent */ 195);
+	
+	var _PostComponent2 = _interopRequireDefault(_PostComponent);
+	
 	var IndexComponent = (function (_React$Component) {
 	  _inherits(IndexComponent, _React$Component);
 	
@@ -23448,7 +23455,13 @@
 	    enumerable: true
 	  }, {
 	    key: 'propTypes',
-	    value: {},
+	    value: {
+	      posts: _reactAddons2['default'].PropTypes.arrayOf(_reactAddons2['default'].PropTypes.shape({
+	        title: _reactAddons2['default'].PropTypes.string,
+	        subtitle: _reactAddons2['default'].PropTypes.string,
+	        content: _reactAddons2['default'].PropTypes.string
+	      }))
+	    },
 	    enumerable: true
 	  }]);
 	
@@ -23460,12 +23473,22 @@
 	  }
 	
 	  _createClass(IndexComponent, [{
+	    key: 'renderPosts',
+	    value: function renderPosts() {
+	      var posts = [];
+	      console.log(this.props.posts);
+	      this.props.posts.forEach(function (post) {
+	        posts.push(_reactAddons2['default'].createElement(_PostComponent2['default'], { post: post.dataValues }));
+	      });
+	      return posts;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _reactAddons2['default'].createElement(
 	        'div',
 	        { className: 'index' },
-	        'Hello Admin! This is Index Component!'
+	        this.renderPosts()
 	      );
 	    }
 	  }]);
@@ -23864,6 +23887,10 @@
 	
 	var _reactAddons2 = _interopRequireDefault(_reactAddons);
 	
+	var _PostComponent = __webpack_require__(/*! ./PostComponent */ 195);
+	
+	var _PostComponent2 = _interopRequireDefault(_PostComponent);
+	
 	var IndexComponent = (function (_React$Component) {
 	  _inherits(IndexComponent, _React$Component);
 	
@@ -23873,7 +23900,13 @@
 	    enumerable: true
 	  }, {
 	    key: 'propTypes',
-	    value: {},
+	    value: {
+	      posts: _reactAddons2['default'].PropTypes.arrayOf(_reactAddons2['default'].PropTypes.shape({
+	        title: _reactAddons2['default'].PropTypes.string,
+	        subtitle: _reactAddons2['default'].PropTypes.string,
+	        content: _reactAddons2['default'].PropTypes.string
+	      }))
+	    },
 	    enumerable: true
 	  }]);
 	
@@ -23885,12 +23918,22 @@
 	  }
 	
 	  _createClass(IndexComponent, [{
+	    key: 'renderPosts',
+	    value: function renderPosts() {
+	      var posts = [];
+	      console.log(this.props.posts);
+	      this.props.posts.forEach(function (post) {
+	        posts.push(_reactAddons2['default'].createElement(_PostComponent2['default'], { post: post.dataValues }));
+	      });
+	      return posts;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _reactAddons2['default'].createElement(
 	        'div',
 	        { className: 'index' },
-	        'Hello Admin! This is Index Component!'
+	        this.renderPosts()
 	      );
 	    }
 	  }]);
@@ -23947,7 +23990,13 @@
 	    enumerable: true
 	  }, {
 	    key: "propTypes",
-	    value: {},
+	    value: {
+	      post: _reactAddons2["default"].PropTypes.shape({
+	        title: _reactAddons2["default"].PropTypes.string,
+	        subtitle: _reactAddons2["default"].PropTypes.string,
+	        content: _reactAddons2["default"].PropTypes.string
+	      })
+	    },
 	    enumerable: true
 	  }]);
 	
@@ -23961,7 +24010,30 @@
 	  _createClass(PostComponent, [{
 	    key: "render",
 	    value: function render() {
-	      return _reactAddons2["default"].createElement("div", null);
+	      var _props$post = this.props.post;
+	      var title = _props$post.title;
+	      var subtitle = _props$post.subtitle;
+	      var content = _props$post.content;
+	
+	      return _reactAddons2["default"].createElement(
+	        "div",
+	        { className: "post" },
+	        _reactAddons2["default"].createElement(
+	          "h1",
+	          { className: "post-title" },
+	          title
+	        ),
+	        _reactAddons2["default"].createElement(
+	          "h2",
+	          { className: "post-subtitle" },
+	          subtitle
+	        ),
+	        _reactAddons2["default"].createElement(
+	          "h3",
+	          { className: "post-content" },
+	          content
+	        )
+	      );
 	    }
 	  }]);
 	
@@ -24023,7 +24095,7 @@
 	      title: _reactAddons2["default"].PropTypes.string,
 	      subtitle: _reactAddons2["default"].PropTypes.string,
 	      content: _reactAddons2["default"].PropTypes.string,
-	      submitHandler: _reactAddons2["default"].PropTypes.handleSubmit
+	      submitHandler: _reactAddons2["default"].PropTypes.func
 	    },
 	    enumerable: true
 	  }]);
@@ -24086,6 +24158,95 @@
 	})(_reactAddons2["default"].Component);
 	
 	exports["default"] = ViewComponent;
+	module.exports = exports["default"];
+
+/***/ },
+/* 195 */
+/*!************************************************************!*\
+  !*** ./assets/javascripts/components/PostComponent.js.jsx ***!
+  \************************************************************/
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var _reactAddons = __webpack_require__(/*! react/addons */ 3);
+	
+	var _reactAddons2 = _interopRequireDefault(_reactAddons);
+	
+	var PostComponent = (function (_React$Component) {
+	  _inherits(PostComponent, _React$Component);
+	
+	  _createClass(PostComponent, null, [{
+	    key: "displayName",
+	    value: "Post",
+	    enumerable: true
+	  }, {
+	    key: "propTypes",
+	    value: {
+	      post: _reactAddons2["default"].PropTypes.shape({
+	        title: _reactAddons2["default"].PropTypes.string,
+	        subtitle: _reactAddons2["default"].PropTypes.string,
+	        content: _reactAddons2["default"].PropTypes.string
+	      })
+	    },
+	    enumerable: true
+	  }]);
+	
+	  function PostComponent(props) {
+	    _classCallCheck(this, PostComponent);
+	
+	    _get(Object.getPrototypeOf(PostComponent.prototype), "constructor", this).call(this, props);
+	    this.state = {};
+	  }
+	
+	  _createClass(PostComponent, [{
+	    key: "render",
+	    value: function render() {
+	      var _props$post = this.props.post;
+	      var title = _props$post.title;
+	      var subtitle = _props$post.subtitle;
+	      var content = _props$post.content;
+	
+	      return _reactAddons2["default"].createElement(
+	        "div",
+	        { className: "post" },
+	        _reactAddons2["default"].createElement(
+	          "h1",
+	          { className: "post-title" },
+	          title
+	        ),
+	        _reactAddons2["default"].createElement(
+	          "h2",
+	          { className: "post-subtitle" },
+	          subtitle
+	        ),
+	        _reactAddons2["default"].createElement(
+	          "h3",
+	          { className: "post-content" },
+	          content
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return PostComponent;
+	})(_reactAddons2["default"].Component);
+	
+	exports["default"] = PostComponent;
 	module.exports = exports["default"];
 
 /***/ }

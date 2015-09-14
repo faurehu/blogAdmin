@@ -23,7 +23,10 @@ export default class SidebarComponent extends React.Component {
     let choices = [];
     this.state.containers.forEach((container) => {
       choices.push(
-        <button onClick={this.props.handler.bind(null, container)}>{container}</button>
+        <button onClick={this.props.handler.bind(null, container)}
+          key={this.state.containers.indexOf(container)}>
+          {container}
+        </button>
       );
     });
     return choices;

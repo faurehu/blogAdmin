@@ -7,7 +7,7 @@ export default class ViewComponent extends React.Component {
     title: React.PropTypes.string,
     subtitle: React.PropTypes.string,
     content: React.PropTypes.string,
-    submitHandler: React.PropTypes.handleSubmit
+    submitHandler: React.PropTypes.func
   };
 
   constructor(props) {

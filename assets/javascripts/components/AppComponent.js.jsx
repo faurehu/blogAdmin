@@ -14,47 +14,50 @@ export default class CommentComponent extends React.Component {
     super(props);
     this.ipc = global.ipc;
     this.state = {
-      container: 'create'
+      container: <ViewComponent submitHandler={this.handlePostSubmit}/>
     };
   }
 
   onContainerSelect = (container) => {
-    this.setState({
-      container: container
-    });
+    switch (container) {
+      case 'create':
+        this.setState({
+          container: <ViewComponent submitHandler={this.handlePostSubmit}/>
+        });
+        break;
+      case 'index':
+        this.ipc.send('fetch-all-posts');
+        this.ipc.on('posts-fetched', (arg) => {
+          this.setState({
+            container: <IndexComponent posts={arg}/>
+          });
+        });
+        break;
+      case 'images':
+        this.setState({
+          container: <ImagesComponent/>
+        });
+        break;
+      case 'pending':
+        this.setState({
+          container: <PendingComponent/>
+        });
+        break;
+    }
   }
 
   handlePostSubmit = (values) => {
-    this.ipc.on('post-submit-reply', function(arg) {
+    this.ipc.on('post-submit-reply', (arg) => {
       console.log(arg);
     });
     this.ipc.send('post-submit', values);
-  }
-
-  renderContainer() {
-    let container;
-    switch (this.state.container) {
-      case 'create':
-        container = <ViewComponent submitHandler={this.handlePostSubmit}/>;
-        break;
-      case 'index':
-        container = <IndexComponent />;
-        break;
-      case 'images':
-        container = <ImagesComponent />;
-        break;
-      case 'pending':
-        container = <PendingComponent />;
-        break;
-    }
-    return container;
   }
 
   render() {
     return (
       <div className="app">
         <SidebarComponent handler={this.onContainerSelect}/>
-        {this.renderContainer()}
+        {this.state.container}
       </div>
     );
   }
