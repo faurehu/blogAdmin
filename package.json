@@ -28,9 +28,12 @@
     "node-libs-browser": "^0.5.2",
     "node-sass": "^3.2.0",
     "path": "^0.11.14",
+    "pg": "^4.4.1",
+    "pg-hstore": "^2.3.2",
     "promised-xhr": "^1.1.0",
     "react": "^0.13.3",
     "sass-loader": "^1.0.2",
+    "sequelize": "^3.8.0",
     "sinon": "^1.15.4",
     "style-loader": "^0.12.3",
     "webpack": "^1.10.1"

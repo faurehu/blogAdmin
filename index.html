@@ -5,6 +5,7 @@
   </head>
   <body></body>
   <script>
-  require('../src/bundle.js');
+  global.ipc = require('ipc');
+  require('./public/bundle.js');
   </script>
 </html>

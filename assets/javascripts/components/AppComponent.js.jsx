@@ -12,6 +12,7 @@ export default class CommentComponent extends React.Component {
 
   constructor(props) {
     super(props);
+    this.ipc = global.ipc;
     this.state = {
       container: 'create'
     };
@@ -25,15 +26,18 @@ export default class CommentComponent extends React.Component {
     });
   }
 
-  handleNewPost = (values) => {
-    console.log(values);
+  handlePostSubmit = (values) => {
+    this.ipc.on('post-submit-reply', function(arg) {
+      console.log(arg);
+    });
+    this.ipc.send('post-submit', values);
   }
 
   renderContainer() {
     let container;
     switch (this.state.container) {
       case 'create':
-        container = <ViewComponent submitHandler={this.handleNewPost}/>;
+        container = <ViewComponent submitHandler={this.handlePostSubmit}/>;
         break;
       case 'index':
         container = <IndexComponent />;
