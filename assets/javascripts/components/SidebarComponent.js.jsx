@@ -24,6 +24,7 @@ export default class SidebarComponent extends React.Component {
     this.state.containers.forEach((container) => {
       choices.push(
         <button onClick={this.props.handler.bind(null, container)}
+          className="sidebar-button"
           key={this.state.containers.indexOf(container)}>
           {container}
         </button>

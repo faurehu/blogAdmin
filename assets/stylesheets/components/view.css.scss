@@ -1,0 +1,68 @@
+.titles-box {
+  margin-bottom: 10px;
+  padding-right: 10px;
+
+  label {
+    width: 80px;
+    text-align: center;
+  }
+
+  .post-title {
+    width: calc(100% - 80px);
+    outline: none;
+  }
+}
+
+.md-editor {
+  height: calc(100% - 115px);
+  margin-bottom: 5px;
+
+  .md-editor-header {
+    margin-left: 0px;
+    margin-right: 0px;
+    border-bottom: 1px solid #ddd;
+
+    .md-editor-menu {
+      margin-top: 7px
+    }
+
+    .md-editor-tabs {
+      padding: 0px;
+      width: 33.3%;
+
+      .tabs {
+        border: none;
+
+        .editor-tab {
+          margin-left: 10px;
+        }
+
+        .active {
+          border-bottom: transparent;
+        }
+      }
+    }
+  }
+
+  .md-editor-textarea {
+    width: 100%;
+    height: calc(100% - 42px);
+    padding: 10px;
+    outline: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .md-editor-preview {
+    padding: 10px;
+  }
+}
+
+.footer-box {
+  text-align: center;
+
+  .submit {
+    left: 0px;
+    width: 100px
+  }
+}

@@ -1,8 +1,9 @@
-import React from "react/addons";
+import React from 'react/addons';
+import MarkdownEditor from './Editor/MarkdownEditor';
 
 export default class ViewComponent extends React.Component {
 
-  static displayName = "View";
+  static displayName = 'View';
   static propTypes = {
     title: React.PropTypes.string,
     subtitle: React.PropTypes.string,
@@ -27,17 +28,22 @@ export default class ViewComponent extends React.Component {
 
   render() {
     return (
-      <div className="view">
-        <label htmlFor="title">Title</label>
-        <input value={this.state.title} className="post-title" name="title" type="text"
-          onChange={this.handleChange.bind(null, 'title')}/>
-        <label htmlFor="subtitle">Subtitle</label>
-        <input value={this.state.subtitle} className="post-subtitle" name="subtitle" type="text"
-          onChange={this.handleChange.bind(null, 'subtitle')}/>
-        <label htmlFor="text">Text</label>
-        <input value={this.state.content} className="post-text" name="text" type="text"
-          onChange={this.handleChange.bind(null, 'content')}/>
-        <button onClick={this.props.submitHandler.bind(null, this.state)}>Submit</button>
+      <div className="view main-content">
+        <div className="titles-box">
+          <label htmlFor="title">Title</label>
+          <input value={this.state.title} className="post-title" name="title" type="text"
+            onChange={this.handleChange.bind(null, 'title')}/>
+          <br />
+          <label htmlFor="subtitle">Subtitle</label>
+          <input value={this.state.subtitle} className="post-title" name="subtitle" type="text"
+            onChange={this.handleChange.bind(null, 'subtitle')}/>
+        </div>
+        <MarkdownEditor/>
+        <div className="footer-box">
+          <button onClick={this.props.submitHandler.bind(null, this.state)} className="btn btn-default submit">
+            Submit
+          </button>
+        </div>
       </div>
     );
   }

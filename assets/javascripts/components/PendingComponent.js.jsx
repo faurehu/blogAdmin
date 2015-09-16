@@ -12,7 +12,7 @@ export default class PendingComponent extends React.Component {
 
   render() {
     return (
-      <div className="pending">
+      <div className="pending main-content">
         Hello Admin! This is Pending Component!
       </div>
     );

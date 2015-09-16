@@ -12,7 +12,7 @@ export default class ImagesComponent extends React.Component {
 
   render() {
     return (
-      <div className="images">
+      <div className="images main-content">
         Hello Admin! This is Images Component!
       </div>
     );

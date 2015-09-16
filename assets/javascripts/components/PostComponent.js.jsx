@@ -19,7 +19,7 @@ export default class PostComponent extends React.Component {
   render() {
     let { title, subtitle, content} = this.props.post;
     return (
-      <div className="post">
+      <div className="post main-content">
         <h1 className="post-title">{title}</h1>
         <h2 className="post-subtitle">{subtitle}</h2>
         <h3 className="post-content">{content}</h3>

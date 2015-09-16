@@ -32,7 +32,7 @@ export default class IndexComponent extends React.Component {
 
   render() {
     return (
-      <div className="index">
+      <div className="index main-content">
         {this.renderPosts()}
       </div>
     );
