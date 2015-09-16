@@ -21,7 +21,6 @@ export default class IndexComponent extends React.Component {
 
   renderPosts() {
     let posts = [];
-    console.log(this.props.posts);
     this.props.posts.forEach((post) => {
       posts.push(
         <PostComponent post={post.dataValues}/>

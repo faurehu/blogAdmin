@@ -1,5 +1,14 @@
 import React from 'react/addons';
 import MarkdownEditor from './Editor/MarkdownEditor';
+import {
+  RegularMarkdownToken,
+  HeaderMarkdownToken,
+  SubHeaderMarkdownToken,
+  UrlMarkdownToken,
+  ListMarkdownToken,
+  ImageMarkdownToken,
+  NullMarkdownToken
+} from './Editor/MarkdownTokenFactory';
 
 export default class ViewComponent extends React.Component {
 
@@ -21,6 +30,35 @@ export default class ViewComponent extends React.Component {
     };
   }
 
+  getMarkdownToken = (actionType) => {
+
+    switch (actionType) {
+      case "bold":
+        return new RegularMarkdownToken("**", true);
+
+      case "italic":
+        return new RegularMarkdownToken("_", true);
+
+      case "header":
+        return new HeaderMarkdownToken();
+
+      case "subheader":
+        return new SubHeaderMarkdownToken();
+
+      case "link":
+        return new UrlMarkdownToken();
+
+      case "list":
+        return new ListMarkdownToken();
+
+      case "image":
+        return new ImageMarkdownToken();
+
+      default:
+        return new NullMarkdownToken();
+    }
+  }
+
   handleChange = (type, e) => {
     this.setState({
       [type]: e.target.value
@@ -32,6 +70,20 @@ export default class ViewComponent extends React.Component {
     this.setState({
       content: content
     });
+  }
+
+  handleEdit = (tokenType) => {
+    if(this.state.selection !== null) {
+      let text = this.state.content;
+      let selection = this.refs.editor.state.selection;
+      let token = this.getMarkdownToken(tokenType);
+      let beforeSelectionContent = text.slice(0, selection.selectionStart);
+      let afterSelectionContent = text.slice(selection.selectionEnd, text.length);
+      let updatedText = token.applyTokenTo(selection.selectedText);
+      let updatedContent = beforeSelectionContent + updatedText + afterSelectionContent;
+      this.handleContentUpdate(updatedContent);
+      this.refs.editor.setState({selection: null, enabled: false});
+    }
   }
 
   render() {
@@ -47,7 +99,7 @@ export default class ViewComponent extends React.Component {
             onChange={this.handleChange.bind(null, 'subtitle')} ref="subtitle"/>
         </div>
         <MarkdownEditor content={this.state.content} onChangeHandler={this.handleChange.bind(null, 'content')}
-          handleContentUpdate={this.handleContentUpdate} ref="editor"/>
+          handleContentUpdate={this.handleContentUpdate} ref="editor" handleEdit={this.handleEdit}/>
         <div className="footer-box">
           <button onClick={this.props.submitHandler.bind(null, this.state)} disabled={this.state.readyForSubmit ? '' : 'disabled'}
             className="btn btn-default submit">
