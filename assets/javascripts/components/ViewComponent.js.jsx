@@ -15,14 +15,19 @@ export default class ViewComponent extends React.Component {
     super(props);
     this.state = {
       title: props.title,
-      subtitle: props.subtitle,
-      content: props.content
+      subtitle: props.subtitle
     };
   }
 
   handleChange = (type, e) => {
     this.setState({
       [type]: e.target.value
+    });
+  }
+
+  handleContentUpdate = (content) => {
+    this.setState({
+      content: content
     });
   }
 
@@ -38,7 +43,8 @@ export default class ViewComponent extends React.Component {
           <input value={this.state.subtitle} className="post-title" name="subtitle" type="text"
             onChange={this.handleChange.bind(null, 'subtitle')}/>
         </div>
-        <MarkdownEditor/>
+        <MarkdownEditor content={this.state.content} onChangeHandler={this.handleChange.bind(null, 'content')}
+          handleContentUpdate={this.handleContentUpdate}/>
         <div className="footer-box">
           <button onClick={this.props.submitHandler.bind(null, this.state)} className="btn btn-default submit">
             Submit

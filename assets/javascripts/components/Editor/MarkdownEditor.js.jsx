@@ -17,7 +17,10 @@ export default class MarkdownEditor extends React.Component {
 
   static displayName = 'Markdown Editor';
   static propTypes = {
-    initialContent: React.PropTypes.string
+    initialContent: React.PropTypes.string,
+    onChangeHandler: React.PropTypes.func,
+    content: React.PropTypes.string,
+    handleContentUpdate: React.PropTypes.func
   };
 
   constructor(props) {
@@ -27,12 +30,6 @@ export default class MarkdownEditor extends React.Component {
       inEditMode: true,
       enabled: false
     };
-  }
-
-  onChangeHandler = (e) => {
-    this.setState({
-      content: e.target.value
-    });
   }
 
   getMarkdownToken = (actionType) => {
@@ -86,18 +83,19 @@ export default class MarkdownEditor extends React.Component {
       var afterSelectionContent = text.slice(selection.selectionEnd, text.length);
       var updatedText = token.applyTokenTo(selection.selectedText);
       let updatedContent = beforeSelectionContent + updatedText + afterSelectionContent;
-      this.setState({content: updatedContent, selection: null, enabled: false});
+      this.props.handleContentUpdate(updatedContent);
+      this.setState({selection: null, enabled: false});
     }
   }
 
   render() {
     let divContent, editorMenu;
     if (this.state.inEditMode) {
-      divContent = (<MarkdownEditorContent content={this.state.content}
-        onChangeHandler={this.onChangeHandler} handleSelection={this.handleSelection}/>);
+      divContent = (<MarkdownEditorContent content={this.props.content}
+        onChangeHandler={this.props.onChangeHandler} handleSelection={this.handleSelection}/>);
       editorMenu = <MarkdownEditorMenu enabled={this.state.enabled} handleEdit={this.handleEdit}/>;
     } else {
-      divContent = <MarkdownEditorPreview content={this.state.content} />;
+      divContent = <MarkdownEditorPreview content={this.props.content} />;
     }
     return (
       <div className="md-editor">
