@@ -91,7 +91,7 @@ export default class MarkdownEditor extends React.Component {
   render() {
     let divContent, editorMenu;
     if (this.state.inEditMode) {
-      divContent = (<MarkdownEditorContent content={this.props.content}
+      divContent = (<MarkdownEditorContent content={this.props.content} ref="content"
         onChangeHandler={this.props.onChangeHandler} handleSelection={this.handleSelection}/>);
       editorMenu = <MarkdownEditorMenu enabled={this.state.enabled} handleEdit={this.handleEdit}/>;
     } else {

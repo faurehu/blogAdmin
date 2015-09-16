@@ -47,11 +47,10 @@ export default class CommentComponent extends React.Component {
   }
 
   handlePostSubmit = (values) => {
-    console.log(values);
-    // this.ipc.on('post-submit-reply', (arg) => {
-    //   console.log(arg);
-    // });
-    // this.ipc.send('post-submit', values);
+    this.ipc.on('post-submit-reply', (arg) => {
+      console.log(arg);
+    });
+    this.ipc.send('post-submit', values);
   }
 
   render() {
