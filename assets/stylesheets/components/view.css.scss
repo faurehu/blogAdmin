@@ -14,7 +14,7 @@
 }
 
 .md-editor {
-  height: calc(100% - 115px);
+  min-height: calc(100% - 115px);
   margin-bottom: 5px;
 
   .md-editor-header {
