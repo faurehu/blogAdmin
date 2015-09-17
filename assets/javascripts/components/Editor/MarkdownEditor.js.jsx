@@ -8,7 +8,6 @@ export default class MarkdownEditor extends React.Component {
 
   static displayName = 'Markdown Editor';
   static propTypes = {
-    initialContent: React.PropTypes.string,
     onChangeHandler: React.PropTypes.func,
     content: React.PropTypes.string,
     handleContentUpdate: React.PropTypes.func,
@@ -18,8 +17,7 @@ export default class MarkdownEditor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      content: props.initialContent || '',
-      inEditMode: true,
+      inEditMode: props.content === undefined,
       enabled: false
     };
   }

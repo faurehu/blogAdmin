@@ -48,9 +48,17 @@ export default class CommentComponent extends React.Component {
 
   getPostEditor = (id) => {
     this.ipc.on('post-fetched', (arg) => {
-      console.log(arg);
+      this.setState({
+        container: <ViewComponent submitHandler={this.handlePostUpdate}
+          post={arg.dataValues} onContainerSelect={this.onContainerSelect}
+          handlePostDelete={this.handlePostDelete}/>
+      });
     });
     this.ipc.send('fetch-post', id);
+  }
+
+  handlePostDelete = () => {
+    console.log('yo');
   }
 
   handlePostSubmit = (values) => {
@@ -58,6 +66,10 @@ export default class CommentComponent extends React.Component {
       console.log(arg);
     });
     this.ipc.send('post-submit', values);
+  }
+
+  handlePostUpdate = () => {
+    console.log('handlePostUpdate');
   }
 
   render() {

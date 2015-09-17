@@ -14,18 +14,23 @@ export default class ViewComponent extends React.Component {
 
   static displayName = 'View';
   static propTypes = {
-    title: React.PropTypes.string,
-    subtitle: React.PropTypes.string,
-    content: React.PropTypes.string,
-    submitHandler: React.PropTypes.func
+    post: React.PropTypes.shape({
+      title: React.PropTypes.string,
+      subtitle: React.PropTypes.string,
+      content: React.PropTypes.string,
+      id: React.PropTypes.number
+    }),
+    submitHandler: React.PropTypes.func,
+    onContainerSelect: React.PropTypes.func,
+    handlePostDelete: React.PropTypes.func
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      title: props.title,
-      subtitle: props.subtitle,
-      content: props.content,
+      title: props.post ? props.post.title : undefined,
+      subtitle: props.post ? props.post.subtitle : undefined,
+      content: props.post ? props.post.content : undefined,
       readyForSubmit: false
     };
   }
@@ -101,9 +106,20 @@ export default class ViewComponent extends React.Component {
         <MarkdownEditor content={this.state.content} onChangeHandler={this.handleChange.bind(null, 'content')}
           handleContentUpdate={this.handleContentUpdate} ref="editor" handleEdit={this.handleEdit}/>
         <div className="footer-box">
+          {this.props.post &&
+            <button onClick={this.props.onContainerSelect.bind(null, 'index')} className="btn btn-default cancel">
+              Cancel
+            </button>
+          }
+          {this.props.post &&
+            <button onClick={this.props.handlePostDelete.bind(null, this.props.post.id)}
+              className="btn btn-default delete">
+              Delete
+            </button>
+          }
           <button onClick={this.props.submitHandler.bind(null, this.state)} disabled={this.state.readyForSubmit ? '' : 'disabled'}
             className="btn btn-default submit">
-            Submit
+            {this.props.post ? 'Update' : 'Submit'}
           </button>
         </div>
       </div>
