@@ -11,7 +11,8 @@ export default class IndexComponent extends React.Component {
         subtitle: React.PropTypes.string,
         content: React.PropTypes.string
       })
-    )
+    ),
+    getPostEditor: React.PropTypes.func
   };
 
   constructor(props) {
@@ -23,7 +24,7 @@ export default class IndexComponent extends React.Component {
     let posts = [];
     this.props.posts.forEach((post) => {
       posts.push(
-        <PostComponent post={post.dataValues}/>
+        <PostComponent post={post.dataValues} handleClick={this.props.getPostEditor}/>
       );
     });
     return posts;

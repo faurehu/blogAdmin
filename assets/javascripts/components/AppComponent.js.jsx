@@ -29,7 +29,7 @@ export default class CommentComponent extends React.Component {
         this.ipc.send('fetch-all-posts');
         this.ipc.on('posts-fetched', (arg) => {
           this.setState({
-            container: <IndexComponent posts={arg}/>
+            container: <IndexComponent posts={arg} getPostEditor={this.getPostEditor}/>
           });
         });
         break;
@@ -44,6 +44,10 @@ export default class CommentComponent extends React.Component {
         });
         break;
     }
+  }
+
+  getPostEditor = () => {
+    console.log('yo');
   }
 
   handlePostSubmit = (values) => {

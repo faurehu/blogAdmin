@@ -8,7 +8,8 @@ export default class PostComponent extends React.Component {
       title: React.PropTypes.string,
       subtitle: React.PropTypes.string,
       content: React.PropTypes.string
-    })
+    }),
+    handleClick: React.PropTypes.func
   };
 
   constructor(props) {
@@ -17,12 +18,11 @@ export default class PostComponent extends React.Component {
   }
 
   render() {
-    let { title, subtitle, content} = this.props.post;
+    let { title, subtitle } = this.props.post;
     return (
-      <div className="post">
+      <div className="post" onClick={this.props.handleClick}>
         <h1 className="post-title">{title}</h1>
         <h2 className="post-subtitle">{subtitle}</h2>
-        <h3 className="post-content">{content}</h3>
       </div>
     );
   }
