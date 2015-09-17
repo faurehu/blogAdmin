@@ -1,5 +1,7 @@
 import ipc from 'ipc';
 
+let error = (err) => { console.log(err); };
+
 export default (sequelize) => {
 
   ipc.on('post-submit', function(event, arg) {
@@ -7,8 +9,6 @@ export default (sequelize) => {
     let success = () => {
       event.sender.send('post-submit-reply', 'success');
     };
-
-    let error = (err) => { console.log(err); };
 
     sequelize.Post.create(arg).then(success).catch(error);
 
@@ -20,9 +20,17 @@ export default (sequelize) => {
       event.sender.send('posts-fetched', data);
     };
 
-    let error = (err) => { console.log(err); };
-
     sequelize.Post.findAll().then(success).catch(error);
+
+  });
+
+  ipc.on('fetch-post', function(event, arg) {
+
+    let success = (data) => {
+      event.sender.send('post-fetched', data);
+    };
+
+    sequelize.Post.findById(arg).then(success).catch(error);
 
   });
 

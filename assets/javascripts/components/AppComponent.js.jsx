@@ -46,8 +46,11 @@ export default class CommentComponent extends React.Component {
     }
   }
 
-  getPostEditor = () => {
-    console.log('yo');
+  getPostEditor = (id) => {
+    this.ipc.on('post-fetched', (arg) => {
+      console.log(arg);
+    });
+    this.ipc.send('fetch-post', id);
   }
 
   handlePostSubmit = (values) => {
