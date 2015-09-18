@@ -15,23 +15,24 @@ export default class MarkdownEditorMenu extends React.Component {
   render() {
 
     let disabled = (!this.props.enabled) ? 'disabled' : '';
+    let handleEdit = this.props.handleEdit;
 
     return (
       <div className="md-editor-menu col-md-6 pull-right">
         <div role="button" disabled={disabled} className="btn fa fa-bold"
-          onClick={this.props.handleEdit.bind(null, 'bold')}></div>
+          onClick={handleEdit.bind(null, 'bold')}></div>
         <div role="button" disabled={disabled} className="btn fa fa-italic"
-          onClick={this.props.handleEdit.bind(null, 'italic')}></div>
+          onClick={handleEdit.bind(null, 'italic')}></div>
         <div role="button" disabled={disabled} className="btn fa md-editor-menu-header"
-          onClick={this.props.handleEdit.bind(null, 'header')}>Header</div>
+          onClick={handleEdit.bind(null, 'header')}>Header</div>
         <div role="button" disabled={disabled} className="btn fa md-editor-menu-subheader"
-          onClick={this.props.handleEdit.bind(null, 'subheader')}>Subheader</div>
+          onClick={handleEdit.bind(null, 'subheader')}>Subheader</div>
         <div role="button" disabled={disabled} className="btn fa fa-list-ul"
-          onClick={this.props.handleEdit.bind(null, 'list')}></div>
+          onClick={handleEdit.bind(null, 'list')}></div>
         <div role="button" disabled={disabled} className="btn fa fa-file-image-o"
-          onClick={this.props.handleEdit.bind(null, 'image')}></div>
+          onClick={handleEdit.bind(null, 'image')}></div>
         <div role="button" disabled={disabled} className="btn fa fa-link"
-          onClick={this.props.handleEdit.bind(null, 'link')}></div>
+          onClick={handleEdit.bind(null, 'link')}></div>
       </div>
     );
   }

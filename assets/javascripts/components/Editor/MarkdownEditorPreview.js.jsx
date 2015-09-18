@@ -10,7 +10,6 @@ export default class MarkdownEditorPreview extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   render() {

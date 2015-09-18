@@ -11,7 +11,6 @@ export default class MarkdownEditorContent extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   componentDidMount() {

@@ -8,47 +8,45 @@ export default class MarkdownEditor extends React.Component {
 
   static displayName = 'Markdown Editor';
   static propTypes = {
-    onChangeHandler: React.PropTypes.func,
     content: React.PropTypes.string,
+    onChangeHandler: React.PropTypes.func,
+    handleEdit: React.PropTypes.func,
     handleContentUpdate: React.PropTypes.func,
-    handleEdit: React.PropTypes.func
+    handleTabClick: React.PropTypes.func,
+    handleSelection: React.PropTypes.func,
+    isMenuEnabled: React.PropTypes.bool,
+    inEditMode: React.PropTypes.bool
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      inEditMode: props.content === undefined,
-      enabled: false
-    };
-  }
-
-  handleSelection = (selection) => {
-    this.setState({
-      selection: selection,
-      enabled: selection ? true : false
-    });
-  }
-
-  handleTabClick = (inEditMode) => {
-    this.setState({
-      inEditMode: inEditMode
-    });
   }
 
   render() {
     let divContent, editorMenu;
-    if (this.state.inEditMode) {
-      divContent = (<MarkdownEditorContent content={this.props.content} ref="content"
-        onChangeHandler={this.props.onChangeHandler} handleSelection={this.handleSelection}/>);
-      editorMenu = <MarkdownEditorMenu enabled={this.state.enabled} handleEdit={this.props.handleEdit}/>;
+
+    let {
+      content,
+      onChangeHandler,
+      isMenuEnabled,
+      handleEdit,
+      handleTabClick,
+      inEditMode,
+      handleSelection
+    } = this.props;
+
+    if (inEditMode) {
+      divContent = (<MarkdownEditorContent content={content} ref="content"
+        onChangeHandler={onChangeHandler} handleSelection={handleSelection}/>);
+      editorMenu = <MarkdownEditorMenu enabled={isMenuEnabled} handleEdit={handleEdit}/>;
     } else {
-      divContent = <MarkdownEditorPreview content={this.props.content} />;
+      divContent = <MarkdownEditorPreview content={content} />;
     }
     return (
       <div className="md-editor">
         <div className="md-editor-header row">
           {editorMenu}
-          <MarkdownEditorTabs handleClick={this.handleTabClick} inEditMode={this.state.inEditMode}/>
+          <MarkdownEditorTabs handleClick={handleTabClick} inEditMode={inEditMode}/>
         </div>
         {divContent}
       </div>

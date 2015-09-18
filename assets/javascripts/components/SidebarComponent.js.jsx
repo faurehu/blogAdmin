@@ -9,23 +9,22 @@ export default class SidebarComponent extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      containers: [
-        'create',
-        'index',
-        'pending',
-        'images'
-      ]
-    };
+    this.containers = [
+      'create',
+      'index',
+      'pending',
+      'images'
+    ];
   }
 
   renderChoices() {
     let choices = [];
-    this.state.containers.forEach((container) => {
+    this.containers.forEach((container) => {
+      let index = this.containers.indexOf(container);
       choices.push(
-        <button onClick={this.props.handler.bind(null, container)}
+        <button onClick={this.props.handler.bind(null, index)}
           className="sidebar-button"
-          key={this.state.containers.indexOf(container)}>
+          key={index}>
           {container}
         </button>
       );

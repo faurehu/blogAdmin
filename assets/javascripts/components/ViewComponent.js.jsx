@@ -22,21 +22,21 @@ export default class ViewComponent extends React.Component {
     }),
     submitHandler: React.PropTypes.func,
     onContainerSelect: React.PropTypes.func,
-    handlePostDelete: React.PropTypes.func
+    handlePostDelete: React.PropTypes.func,
+    onInputChange: React.PropTypes.func,
+    handleContentUpdate: React.PropTypes.func,
+    readyForSubmit: React.PropTypes.bool,
+    handleTabClick: React.PropTypes.func,
+    handleSelection: React.PropTypes.func,
+    isMenuEnabled: React.PropTypes.bool,
+    inEditMode: React.PropTypes.bool
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      title: props.post ? props.post.title : undefined,
-      subtitle: props.post ? props.post.subtitle : undefined,
-      content: props.post ? props.post.content : undefined,
-      readyForSubmit: false
-    };
   }
 
   getMarkdownToken = (actionType) => {
-
     switch (actionType) {
       case "bold":
         return new RegularMarkdownToken("**", true);
@@ -64,76 +64,90 @@ export default class ViewComponent extends React.Component {
     }
   }
 
-  handleChange = (type, e) => {
-    this.setState({
-      [type]: e.target.value
-    });
-    this.checkForEmptyFields();
-  }
-
-  handleContentUpdate = (content) => {
-    this.setState({
-      content: content
-    });
-  }
-
   handleEdit = (tokenType) => {
-    if(this.state.selection !== null) {
-      let text = this.state.content;
-      let selection = this.refs.editor.state.selection;
+    let post = this.props.post;
+    if(post.selection !== null) {
+      let text = post.content;
+      let selection = post.selection;
       let token = this.getMarkdownToken(tokenType);
       let beforeSelectionContent = text.slice(0, selection.selectionStart);
       let afterSelectionContent = text.slice(selection.selectionEnd, text.length);
       let updatedText = token.applyTokenTo(selection.selectedText);
       let updatedContent = beforeSelectionContent + updatedText + afterSelectionContent;
-      this.handleContentUpdate(updatedContent);
-      this.refs.editor.setState({selection: null, enabled: false});
+      this.props.handleContentUpdate(updatedContent);
     }
   }
 
-  render() {
+  renderFooter() {
+
+    let {
+      onContainerSelect,
+      handlePostDelete,
+      submitHandler,
+      readyForSubmit,
+      post
+    } = this.props;
+
     return (
-      <div className="view main-content">
-        <div className="titles-box">
-          <label htmlFor="title">Title</label>
-          <input value={this.state.title} className="post-title" name="title" type="text"
-            onChange={this.handleChange.bind(null, 'title')} ref="title"/>
-          <br />
-          <label htmlFor="subtitle">Subtitle</label>
-          <input value={this.state.subtitle} className="post-title" name="subtitle" type="text"
-            onChange={this.handleChange.bind(null, 'subtitle')} ref="subtitle"/>
-        </div>
-        <MarkdownEditor content={this.state.content} onChangeHandler={this.handleChange.bind(null, 'content')}
-          handleContentUpdate={this.handleContentUpdate} ref="editor" handleEdit={this.handleEdit}/>
-        <div className="footer-box">
-          {this.props.post &&
-            <button onClick={this.props.onContainerSelect.bind(null, 'index')} className="btn btn-default cancel">
-              Cancel
-            </button>
-          }
-          {this.props.post &&
-            <button onClick={this.props.handlePostDelete.bind(null, this.props.post.id)}
-              className="btn btn-default delete">
-              Delete
-            </button>
-          }
-          <button onClick={this.props.submitHandler.bind(null, this.state)} disabled={this.state.readyForSubmit ? '' : 'disabled'}
-            className="btn btn-default submit">
-            {this.props.post ? 'Update' : 'Submit'}
+      <div className="footer-box">
+        {post &&
+          <button onClick={onContainerSelect.bind(null, 1)} className="btn btn-default cancel">
+            Cancel
           </button>
-        </div>
+        }
+        {post &&
+          <button onClick={handlePostDelete.bind(null, post.id)}
+            className="btn btn-default delete">
+            Delete
+          </button>
+        }
+        <button onClick={submitHandler} disabled={readyForSubmit ? '' : 'disabled'}
+          className="btn btn-default submit">
+          {post ? 'Update' : 'Submit'}
+        </button>
       </div>
     );
   }
 
-  checkForEmptyFields() {
-    let title = React.findDOMNode(this.refs.title).value;
-    let subtitle = React.findDOMNode(this.refs.subtitle).value;
-    let content = React.findDOMNode(this.refs.editor.refs.content.refs.editor).value;
-    let readyForSubmit = title.trim() !== '' && subtitle.trim() !== '' && content.trim() !== '';
-    this.setState({
-      readyForSubmit: readyForSubmit
-    });
+  render() {
+    let {
+      post,
+      onInputChange,
+      handleTabClick,
+      handleContentUpdate,
+      handleSelection,
+      isMenuEnabled,
+      inEditMode
+    } = this.props;
+
+    post = post ? post.dataValues : undefined;
+
+    let editorProps = {
+      content: post ? post.content : undefined,
+      onChangeHandler: onInputChange.bind(null, 'content'),
+      handleEdit: this.handleEdit,
+      handleContentUpdate: handleContentUpdate,
+      handleTabClick: handleTabClick,
+      handleSelection: handleSelection,
+      isMenuEnabled: isMenuEnabled,
+      inEditMode: inEditMode
+    };
+
+    return (
+      <div className="view main-content">
+        <div className="titles-box">
+          <label htmlFor="title">Title</label>
+          <input value={post ? post.title : undefined} className="post-title" name="title" type="text"
+            onChange={onInputChange.bind(null, 'title')} ref="title"/>
+          <br />
+          <label htmlFor="subtitle">Subtitle</label>
+          <input value={post ? post.subtitle : undefined} className="post-title" name="subtitle" type="text"
+            onChange={onInputChange.bind(null, 'subtitle')} ref="subtitle"/>
+        </div>
+        <MarkdownEditor ref="editor" {...editorProps}/>
+        { this.renderFooter() }
+      </div>
+    );
   }
 
 }
