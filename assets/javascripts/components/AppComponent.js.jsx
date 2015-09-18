@@ -23,7 +23,6 @@ export default class AppComponent extends React.Component {
   }
 
   getPostEditor = (postIndex) => {
-    console.log('yo', postIndex);
     this.setState({
       postIndex: postIndex,
       post: this.state.posts[postIndex],
@@ -120,13 +119,10 @@ export default class AppComponent extends React.Component {
       <ImagesComponent/>
     ];
 
-    console.log('rendering view', this.state.view);
     return views[this.state.view];
   }
 
   render() {
-    console.log('rendering');
-    console.log(this.state);
     return (
       <div className="app">
         <SidebarComponent handler={this.handleViewChange}/>
