@@ -33,8 +33,10 @@ export default class AppComponent extends React.Component {
   }
 
   handleContentUpdate = (updatedContent) => {
+    let post = this.state.post || {};
+    post.content = updatedContent;
     this.setState({
-      post: { content: updatedContent }
+      post: post
     });
   }
 
@@ -45,10 +47,10 @@ export default class AppComponent extends React.Component {
   }
 
   handleInputChange = (type, e) => {
+    let post = this.state.post || {};
+    post[type] = e.target.value;
     this.setState({
-      post: {
-        [type]: e.target.value
-      }
+      post: post
     });
     this.checkForEmptyFields();
   }
@@ -79,8 +81,10 @@ export default class AppComponent extends React.Component {
   }
 
   handleSelection = (selection) => {
+    let post = this.state.post || {};
+    post.selection = selection;
     this.setState({
-      post: {selection: selection},
+      post: post,
       isMenuEnabled: selection !== undefined
     });
   }
@@ -95,11 +99,11 @@ export default class AppComponent extends React.Component {
   }
 
   renderView = () => {
-    let { posts, postIndex, readyForSubmit, isMenuEnabled, inEditMode } = this.state;
+    let { posts, readyForSubmit, isMenuEnabled, inEditMode, post } = this.state;
 
     let viewProps = {
       submitHandler: this.handlePostSubmit,
-      post: postIndex > -1 ? posts[postIndex] : undefined,
+      post: post,
       onInputChange: this.handleInputChange,
       handleContentUpdate: this.handleContentUpdate,
       onContainerSelect: this.handleViewChange,

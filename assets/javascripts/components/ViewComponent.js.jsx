@@ -120,10 +120,8 @@ export default class ViewComponent extends React.Component {
       inEditMode
     } = this.props;
 
-    post = post ? post.dataValues : undefined;
-
     let editorProps = {
-      content: post ? post.content : undefined,
+      content: post && post.content,
       onChangeHandler: onInputChange.bind(null, 'content'),
       handleEdit: this.handleEdit,
       handleContentUpdate: handleContentUpdate,
@@ -137,11 +135,11 @@ export default class ViewComponent extends React.Component {
       <div className="view main-content">
         <div className="titles-box">
           <label htmlFor="title">Title</label>
-          <input value={post ? post.title : undefined} className="post-title" name="title" type="text"
+          <input value={post && post.title} className="post-title" name="title" type="text"
             onChange={onInputChange.bind(null, 'title')} ref="title"/>
           <br />
           <label htmlFor="subtitle">Subtitle</label>
-          <input value={post ? post.subtitle : undefined} className="post-title" name="subtitle" type="text"
+          <input value={post && post.subtitle} className="post-title" name="subtitle" type="text"
             onChange={onInputChange.bind(null, 'subtitle')} ref="subtitle"/>
         </div>
         <MarkdownEditor ref="editor" {...editorProps}/>

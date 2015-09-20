@@ -14,7 +14,7 @@ export default class MarkdownEditorPreview extends React.Component {
 
   render() {
 
-    let htmlContent = this.props.content ? marked(this.props.content) : '';
+    let htmlContent = this.props.content && marked(this.props.content);
 
     return (
       <div className="md-editor-preview"
