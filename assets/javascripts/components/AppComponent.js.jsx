@@ -25,7 +25,7 @@ export default class AppComponent extends React.Component {
   getPostEditor = (postIndex) => {
     this.setState({
       postIndex: postIndex,
-      post: this.state.posts[postIndex],
+      post: this.state.posts[postIndex].dataValues,
       readyForSubmit: false,
       inEditMode: false,
       view: 0
