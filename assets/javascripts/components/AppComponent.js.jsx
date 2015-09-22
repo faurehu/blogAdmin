@@ -128,7 +128,6 @@ export default class AppComponent extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="app">
         <SidebarComponent handler={this.handleViewChange}/>

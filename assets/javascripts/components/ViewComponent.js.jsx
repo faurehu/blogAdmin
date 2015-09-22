@@ -90,12 +90,12 @@ export default class ViewComponent extends React.Component {
 
     return (
       <div className="footer-box">
-        {post &&
+        {post && post.id &&
           <button onClick={onContainerSelect.bind(null, 1)} className="btn btn-default cancel">
             Cancel
           </button>
         }
-        {post &&
+        {post && post.id &&
           <button onClick={handlePostDelete.bind(null, post.id)}
             className="btn btn-default delete">
             Delete
@@ -103,7 +103,7 @@ export default class ViewComponent extends React.Component {
         }
         <button onClick={submitHandler} disabled={readyForSubmit ? '' : 'disabled'}
           className="btn btn-default submit">
-          {post ? 'Update' : 'Submit'}
+          {post && post.id ? 'Update' : 'Submit'}
         </button>
       </div>
     );
