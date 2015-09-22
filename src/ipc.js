@@ -34,4 +34,18 @@ export default (sequelize) => {
 
   });
 
+  ipc.on('delete-post', function(event, arg) {
+
+    let success = () => {
+      event.sender.send('post-deleted', 'success');
+    };
+
+    let found = (data) => {
+      data.destroy().then(success).catch(error);
+    };
+
+    sequelize.Post.findById(arg).then(found).catch(error);
+
+  });
+
 };

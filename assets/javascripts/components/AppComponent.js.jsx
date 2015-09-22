@@ -55,8 +55,15 @@ export default class AppComponent extends React.Component {
     this.checkForEmptyFields();
   }
 
-  handlePostDelete = () => {
-    console.log('yo');
+  handlePostDelete = (id) => {
+    this.ipc.on('post-deleted', (arg) => {
+      if (arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.send('delete-post', id);
   }
 
   handlePostSubmit = () => {
@@ -123,7 +130,7 @@ export default class AppComponent extends React.Component {
     let views = [
       <ViewComponent ref="postView" {...viewProps}/>,
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
-        setPosts={this.handlePostsFetch}/>,
+        setPosts={this.handlePostsFetch} ref="indexView"/>,
       <PendingComponent/>,
       <ImagesComponent/>
     ];
