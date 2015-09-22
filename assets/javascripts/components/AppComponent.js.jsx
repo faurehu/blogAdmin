@@ -94,7 +94,8 @@ export default class AppComponent extends React.Component {
     this.setState({
       view: viewId,
       postIndex: postIndex,
-      inEditMode: true
+      inEditMode: true,
+      post: undefined
     });
   }
 
