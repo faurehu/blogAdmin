@@ -61,7 +61,11 @@ export default class AppComponent extends React.Component {
 
   handlePostSubmit = () => {
     this.ipc.on('post-submit-reply', (arg) => {
-      console.log(arg);
+      if (arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
     });
     this.ipc.send('post-submit', {
       content: this.state.post.content,
