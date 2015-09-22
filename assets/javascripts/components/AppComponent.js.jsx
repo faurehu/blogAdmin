@@ -13,6 +13,7 @@ export default class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     this.ipc = global.ipc;
+    this.jQuery = global.jQuery;
     this.state = {
       postIndex: -1,
       isMenuEnabled: false,
@@ -23,9 +24,10 @@ export default class AppComponent extends React.Component {
   }
 
   getPostEditor = (postIndex) => {
+    let post = this.state.posts[postIndex].dataValues;
     this.setState({
       postIndex: postIndex,
-      post: this.state.posts[postIndex].dataValues,
+      post: this.jQuery.extend(true, {}, post),
       readyForSubmit: false,
       inEditMode: false,
       view: 0
@@ -52,7 +54,7 @@ export default class AppComponent extends React.Component {
     this.setState({
       post: post
     });
-    this.checkForEmptyFields();
+    this.checkIfReady();
   }
 
   handlePostDelete = (id) => {
@@ -160,14 +162,19 @@ export default class AppComponent extends React.Component {
     );
   }
 
-  checkForEmptyFields = () => {
+  checkIfReady() {
+    let { postIndex, inEditMode, posts } = this.state;
+    let currentPost = postIndex > -1 ? posts[postIndex].dataValues : undefined;
     let postView = this.refs.postView.refs;
     let title = React.findDOMNode(postView.title).value;
     let subtitle = React.findDOMNode(postView.subtitle).value;
-    let content = React.findDOMNode(postView.editor.refs.content.refs.editor).value;
-    let readyForSubmit = title.trim() !== '' && subtitle.trim() !== '' && content.trim() !== '';
+    let content = inEditMode && React.findDOMNode(postView.editor.refs.content.refs.editor).value;
+    let isNotEmpty = (inEditMode && title.trim() !== '' && subtitle.trim() !== '' && content && content.trim() !== '') ||
+    (!inEditMode && title.trim() !== '' && subtitle.trim() !== '');
+    let isNewContent = currentPost && currentPost.title !== title || currentPost && currentPost.subtitle !== subtitle ||
+      inEditMode && currentPost && currentPost.content !== content;
     this.setState({
-      readyForSubmit: readyForSubmit
+      readyForSubmit: currentPost ? isNotEmpty && isNewContent : isNotEmpty
     });
   }
 }

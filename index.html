@@ -9,6 +9,7 @@
   <body>
     <script>
     let $ = jQuery = require('jquery');
+    global.jQuery = jQuery;
     global.ipc = require('ipc');
     require('./public/bundle.js');
     </script>
