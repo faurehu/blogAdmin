@@ -20,6 +20,10 @@ export default class MarkdownEditorContent extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    React.findDOMNode(this.refs.editor).value = this.props.content || '';
+  }
+
   componentWillUnmount() {
     this.textAreaElem.removeEventListener('select', this.onSelectHandler);
   }
