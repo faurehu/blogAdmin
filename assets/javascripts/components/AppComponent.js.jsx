@@ -88,7 +88,19 @@ export default class AppComponent extends React.Component {
   }
 
   handlePostUpdate = () => {
-    console.log('handlePostUpdate');
+    this.ipc.on('post-updated', (arg) => {
+      if(arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.send('update-post', {
+      content: this.state.post.content,
+      title: this.state.post.title,
+      subtitle: this.state.post.subtitle,
+      id: this.state.post.id
+    });
   }
 
   handleSelection = (selection) => {
@@ -124,7 +136,8 @@ export default class AppComponent extends React.Component {
       handlePostDelete: this.handlePostDelete,
       handleSelection: this.handleSelection,
       isMenuEnabled: isMenuEnabled,
-      inEditMode: inEditMode
+      inEditMode: inEditMode,
+      handlePostUpdate: this.handlePostUpdate
     };
 
     let views = [

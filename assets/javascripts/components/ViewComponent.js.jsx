@@ -29,7 +29,8 @@ export default class ViewComponent extends React.Component {
     handleTabClick: React.PropTypes.func,
     handleSelection: React.PropTypes.func,
     isMenuEnabled: React.PropTypes.bool,
-    inEditMode: React.PropTypes.bool
+    inEditMode: React.PropTypes.bool,
+    handlePostUpdate: React.PropTypes.func
   };
 
   constructor(props) {
@@ -85,6 +86,7 @@ export default class ViewComponent extends React.Component {
       handlePostDelete,
       submitHandler,
       readyForSubmit,
+      handlePostUpdate,
       post
     } = this.props;
 
@@ -101,7 +103,7 @@ export default class ViewComponent extends React.Component {
             Delete
           </button>
         }
-        <button onClick={submitHandler} disabled={readyForSubmit ? '' : 'disabled'}
+        <button onClick={post && post.id ? handlePostUpdate : submitHandler} disabled={readyForSubmit ? '' : 'disabled'}
           className="btn btn-default submit">
           {post && post.id ? 'Update' : 'Submit'}
         </button>
