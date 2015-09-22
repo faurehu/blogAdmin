@@ -14,7 +14,7 @@
 }
 
 .md-editor {
-  min-height: calc(100% - 115px);
+  height: calc(100% - 115px);
   margin-bottom: 5px;
 
   .md-editor-header {
@@ -46,7 +46,7 @@
 
   .md-editor-textarea {
     width: 100%;
-    height: calc(100% - 42px);
+    height: calc(100% - 40px);
     padding: 10px;
     outline: none;
     border: none;
