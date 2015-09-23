@@ -35,6 +35,7 @@
     "pg-hstore": "^2.3.2",
     "promised-xhr": "^1.1.0",
     "react": "^0.13.3",
+    "s3-uploader": "^1.0.1",
     "sass-loader": "^1.0.2",
     "sequelize": "^3.8.0",
     "sinon": "^1.15.4",

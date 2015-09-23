@@ -15,7 +15,8 @@ export default class MarkdownEditor extends React.Component {
     handleTabClick: React.PropTypes.func,
     handleSelection: React.PropTypes.func,
     isMenuEnabled: React.PropTypes.bool,
-    inEditMode: React.PropTypes.bool
+    inEditMode: React.PropTypes.bool,
+    insertImage: React.PropTypes.func
   };
 
   constructor(props) {
@@ -32,12 +33,14 @@ export default class MarkdownEditor extends React.Component {
       handleEdit,
       handleTabClick,
       inEditMode,
-      handleSelection
+      handleSelection,
+      insertImage
     } = this.props;
 
     if (inEditMode) {
       divContent = (<MarkdownEditorContent content={content} ref="content"
-        onChangeHandler={onChangeHandler} handleSelection={handleSelection}/>);
+        onChangeHandler={onChangeHandler} handleSelection={handleSelection}
+        insertImage={insertImage}/>);
       editorMenu = <MarkdownEditorMenu enabled={isMenuEnabled} handleEdit={handleEdit}/>;
     } else {
       divContent = <MarkdownEditorPreview content={content} />;

@@ -139,7 +139,8 @@ export default class AppComponent extends React.Component {
       handleSelection: this.handleSelection,
       isMenuEnabled: isMenuEnabled,
       inEditMode: inEditMode,
-      handlePostUpdate: this.handlePostUpdate
+      handlePostUpdate: this.handlePostUpdate,
+      insertImage: this.insertImage
     };
 
     let views = [
@@ -176,5 +177,9 @@ export default class AppComponent extends React.Component {
     this.setState({
       readyForSubmit: currentPost ? isNotEmpty && isNewContent : isNotEmpty
     });
+  }
+
+  insertImage(position, path) {
+    console.log(position, path);
   }
 }

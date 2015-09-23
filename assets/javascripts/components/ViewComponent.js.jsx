@@ -30,7 +30,8 @@ export default class ViewComponent extends React.Component {
     handleSelection: React.PropTypes.func,
     isMenuEnabled: React.PropTypes.bool,
     inEditMode: React.PropTypes.bool,
-    handlePostUpdate: React.PropTypes.func
+    handlePostUpdate: React.PropTypes.func,
+    insertImage: React.PropTypes.func
   };
 
   constructor(props) {
@@ -119,10 +120,12 @@ export default class ViewComponent extends React.Component {
       handleContentUpdate,
       handleSelection,
       isMenuEnabled,
-      inEditMode
+      inEditMode,
+      insertImage
     } = this.props;
 
     let editorProps = {
+      insertImage: insertImage,
       content: post && post.content,
       onChangeHandler: onInputChange.bind(null, 'content'),
       handleEdit: this.handleEdit,
