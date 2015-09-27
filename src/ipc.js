@@ -1,8 +1,15 @@
 import ipc from 'ipc';
+import parsePost from './postParser';
 
 let error = (err) => { console.log(err); };
 
 export default (sequelize) => {
+
+  let submitPost = (post) => {
+    return new Promise((resolve, reject) => {
+      sequelize.Post.create(post).then(resolve).then(reject);
+    });
+  };
 
   ipc.on('post-submit', (event, arg) => {
 
@@ -10,7 +17,7 @@ export default (sequelize) => {
       event.sender.send('post-submit-reply', 'success');
     };
 
-    sequelize.Post.create(arg).then(success).catch(error);
+    parsePost(arg).then(submitPost).then(success).catch(error);
 
   });
 

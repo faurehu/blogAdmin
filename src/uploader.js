@@ -1,4 +1,5 @@
 import Upload from 's3-uploader';
+import fs from 'fs';
 
 let client = new Upload('faurephoto', {
   aws: {
@@ -32,12 +33,22 @@ let client = new Upload('faurephoto', {
   }]
 });
 
-module.exports = client;
+let uploadImage = (path) => {
+  return new Promise((resolve, reject) => {
+    fs.exists(path, (exists) => {
+      if(exists) {
+        client.upload(path, {}, (err, versions) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve({old: path, new: versions[1].url});
+          }
+        });
+      } else {
+        reject('Path is invalid');
+      }
+    });
+  });
+};
 
-// client.upload(path, {}, function(err, versions) {
-//   if (err) { throw err; }
-//
-//   versions.forEach(function(image) {
-//     console.log(image.width, image.height, image.url);
-//   });
-// });
+module.exports = uploadImage;
