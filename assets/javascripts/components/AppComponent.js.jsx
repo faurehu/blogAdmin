@@ -180,6 +180,12 @@ export default class AppComponent extends React.Component {
   }
 
   insertImage(position, path) {
-    console.log(position, path);
+    let post = this.state.post || {};
+    let preContent = post.content ? post.content.slice(0, position) : '';
+    let postContent = post.content ? post.content.slice(position, post.content.length) : '';
+    post.content = `${preContent}![](${path})${postContent}`;
+    this.setState({
+      post: post
+    });
   }
 }
