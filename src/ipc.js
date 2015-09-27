@@ -7,7 +7,13 @@ export default (sequelize) => {
 
   let submitPost = (post) => {
     return new Promise((resolve, reject) => {
-      sequelize.Post.create(post).then(resolve).then(reject);
+      sequelize.Post.create(post).then(resolve).catch(reject);
+    });
+  };
+
+  let findPost = (arg) => {
+    return new Promise((resolve, reject) => {
+      sequelize.Post.findById(arg.id).then(resolve).catch(reject);
     });
   };
 
@@ -69,7 +75,7 @@ export default (sequelize) => {
       }).then(success).catch(error);
     };
 
-    sequelize.Post.findById(arg.id).then(found).catch(error);
+    parsePost(arg).then(findPost).then(found).catch(error);
 
   });
 
