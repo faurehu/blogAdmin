@@ -8,11 +8,6 @@ module.exports = function(sequelize, DataTypes) {
       autoIncrement: true
     },
 
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-
     caption: {
       type: DataTypes.TEXT
     },

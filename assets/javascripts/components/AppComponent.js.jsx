@@ -89,6 +89,12 @@ export default class AppComponent extends React.Component {
     });
   }
 
+  handleImagesFetch = (images) => {
+    this.setState({
+      images: images
+    });
+  }
+
   handlePostUpdate = () => {
     this.ipc.on('post-updated', (arg) => {
       if(arg === 'success') {
@@ -148,7 +154,7 @@ export default class AppComponent extends React.Component {
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
         setPosts={this.handlePostsFetch} ref="indexView"/>,
       <PendingComponent/>,
-      <ImagesComponent/>
+      <ImagesComponent setImages={this.handleImagesFetch} images={images} />
     ];
 
     return views[this.state.view];
