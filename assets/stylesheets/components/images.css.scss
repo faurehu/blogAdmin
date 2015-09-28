@@ -1,0 +1,34 @@
+.images {
+  .image {
+    border: 1px solid black;
+    width: 300px;
+    height: 300px;
+    position: relative;
+    margin: 10px;
+    display: inline-block;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+    }
+
+    button {
+      margin: 2px;
+      position: absolute;
+      display: none;
+    }
+
+    input {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    &:hover {
+      button {
+        display: inline;
+      }
+    }
+  }
+}

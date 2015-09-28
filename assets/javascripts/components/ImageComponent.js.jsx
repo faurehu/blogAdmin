@@ -18,6 +18,7 @@ export default class ImageComponent extends React.Component {
   render() {
     return (
       <div className="image">
+        <button />
         <img src={this.props.image.small || this.props.image.local}/>
         <input type="text" value={this.props.image.caption}/>
       </div>
