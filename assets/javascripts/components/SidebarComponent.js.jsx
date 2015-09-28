@@ -12,7 +12,6 @@ export default class SidebarComponent extends React.Component {
     this.containers = [
       'create',
       'index',
-      'pending',
       'images'
     ];
   }
