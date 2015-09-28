@@ -54,7 +54,9 @@
   }
 
   .md-editor-preview {
+    height: calc(100% - 40px);
     padding: 10px;
+    overflow-x: hidden;
   }
 }
 
