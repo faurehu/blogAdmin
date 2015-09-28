@@ -5,6 +5,12 @@ export default class ImagesComponent extends React.Component {
 
   static displayName = 'Images';
   static propTypes = {
+    images: React.PropTypes.arrayOf(
+      React.PropTypes.shape({
+        caption: React.PropTypes.string,
+        small: React.PropTypes.string
+      })
+    ),
     setImages: React.PropTypes.func
   };
 
@@ -21,13 +27,19 @@ export default class ImagesComponent extends React.Component {
   }
 
   renderImages() {
-    return (<ImageComponent />);
+    let images = [];
+    this.props.images.forEach((image) => {
+      images.push(
+        <ImageComponent image={image.dataValues} key={image.dataValues.id}/>
+      );
+    });
+    return images;
   }
 
   render() {
     return (
       <div className="images main-content">
-        {this.renderImages()}
+        {this.props.images && this.renderImages()}
       </div>
     );
   }

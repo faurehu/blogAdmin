@@ -79,4 +79,13 @@ export default (sequelize) => {
 
   });
 
+  ipc.on('fetch-all-images', (event) => {
+
+    let success = (data) => {
+      event.sender.send('images-fetched', data);
+    };
+
+    sequelize.Image.findAll().then(success).catch(error);
+  });
+
 };
