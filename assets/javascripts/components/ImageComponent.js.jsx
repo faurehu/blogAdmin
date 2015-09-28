@@ -3,7 +3,13 @@ import React from "react/addons";
 export default class ImageComponent extends React.Component {
 
   static displayName = "Image";
-  static propTypes = {};
+  static propTypes = {
+    image: React.PropTypes.shape({
+      caption: React.PropTypes.string,
+      small: React.PropTypes.string,
+      local: React.PropTypes.string
+    })
+  };
 
   constructor(props) {
     super(props);
@@ -11,7 +17,10 @@ export default class ImageComponent extends React.Component {
 
   render() {
     return (
-      <div />
+      <div className="image">
+        <img src={this.props.image.small || this.props.image.local}/>
+        <input type="text" value={this.props.image.caption}/>
+      </div>
     );
   }
 

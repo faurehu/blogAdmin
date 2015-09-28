@@ -90,7 +90,7 @@ export default class AppComponent extends React.Component {
 
   handleImagesFetch = (images) => {
     this.setState({
-      images: images
+      images: images.map((image) => { return image.dataValues; })
     });
   }
 
@@ -152,13 +152,15 @@ export default class AppComponent extends React.Component {
       <ViewComponent ref="postView" {...viewProps}/>,
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
         setPosts={this.handlePostsFetch} ref="indexView"/>,
-      <ImagesComponent setImages={this.handleImagesFetch} images={images} />
+      <ImagesComponent setImages={this.handleImagesFetch} images={images}
+        addImage={this.addImage}/>
     ];
 
     return views[this.state.view];
   }
 
   render() {
+    console.log(this.state.images);
     return (
       <div className="app">
         <SidebarComponent handler={this.handleViewChange}/>
@@ -190,6 +192,17 @@ export default class AppComponent extends React.Component {
     post.content = `${preContent}![](${path})${postContent}`;
     this.setState({
       post: post
+    });
+  }
+
+  addImage = (path) => {
+    let images = this.state.images;
+    images.push({
+      local: path,
+      id: images.length
+    });
+    this.setState({
+      images: images
     });
   }
 }
