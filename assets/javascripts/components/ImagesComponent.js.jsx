@@ -12,7 +12,8 @@ export default class ImagesComponent extends React.Component {
       })
     ),
     setImages: React.PropTypes.func,
-    addImage: React.PropTypes.func
+    addImage: React.PropTypes.func,
+    onSave: React.PropTypes.func
   };
 
   constructor(props) {
@@ -29,7 +30,6 @@ export default class ImagesComponent extends React.Component {
 
   componentDidMount() {
     let holder = document.getElementById('images-holder');
-    console.log(holder);
     holder.ondragover = () => {
       return false;
     };
@@ -55,15 +55,27 @@ export default class ImagesComponent extends React.Component {
   }
 
   renderSaveButton() {
-    return (
-      <button />
-    );
+    let canSave = false;
+    this.props.images.forEach((image) => {
+      if(image.local !== undefined) {
+        canSave = true;
+      }
+    });
+    if(canSave) {
+      return (
+        <div className="footer">
+          <button onClick={this.props.onSave}>Save</button>
+        </div>);
+    }
   }
 
   render() {
     return (
       <div className="images main-content" id="images-holder">
-        {this.props.images && this.renderImages()}
+        <div className="images-grid">
+          {this.props.images && this.renderImages()}
+        </div>
+        {this.props.images && this.renderSaveButton()}
       </div>
     );
   }

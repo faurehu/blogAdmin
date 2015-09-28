@@ -1,4 +1,6 @@
-.images {
+.images-grid {
+  height: calc(100% - 35px);
+
   .image {
     border: 1px solid black;
     width: 300px;
@@ -31,4 +33,9 @@
       }
     }
   }
+}
+
+.footer {
+  margin: 5px;
+  text-align: center;
 }

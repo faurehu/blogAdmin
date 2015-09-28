@@ -94,6 +94,10 @@ export default class AppComponent extends React.Component {
     });
   }
 
+  handleImagesSave = () => {
+    console.log('yo');
+  }
+
   handlePostUpdate = () => {
     this.ipc.on('post-updated', (arg) => {
       if(arg === 'success') {
@@ -153,7 +157,7 @@ export default class AppComponent extends React.Component {
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
         setPosts={this.handlePostsFetch} ref="indexView"/>,
       <ImagesComponent setImages={this.handleImagesFetch} images={images}
-        addImage={this.addImage}/>
+        addImage={this.addImage} onSave={this.handleImagesSave}/>
     ];
 
     return views[this.state.view];
