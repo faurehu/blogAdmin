@@ -15,17 +15,12 @@ let sequelize = new Sequelize(config.db.name, config.db.user, config.db.password
 
 let models = [
   'Post',
-	'Comment',
 	'Image'
 ];
 
 models.forEach(model => {
   module.exports[model] = sequelize.import(`${__dirname}/${model}`);
 });
-
-(function(m) {
-  m.Post.hasMany(m.Comment, {onDelete: 'cascade', as: 'Comments'});
-})(module.exports);
 
 sequelize.sync()
   .error(error => {

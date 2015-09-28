@@ -5,7 +5,6 @@ require('./app.js');
 require('../stylesheets/entry.css.scss');
 
 require('expose?AppComponent!./components/AppComponent');
-require('expose?CommentComponent!./components/CommentComponent');
 require('expose?ImageComponent!./components/ImageComponent');
 require('expose?ImagesComponent!./components/ImagesComponent');
 require('expose?IndexComponent!./components/IndexComponent');

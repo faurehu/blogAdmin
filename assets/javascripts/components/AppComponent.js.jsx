@@ -3,7 +3,6 @@ import SidebarComponent from './SidebarComponent';
 import ViewComponent from './ViewComponent';
 import IndexComponent from './IndexComponent';
 import ImagesComponent from './ImagesComponent';
-import PendingComponent from './PendingComponent';
 
 export default class AppComponent extends React.Component {
 
@@ -131,7 +130,7 @@ export default class AppComponent extends React.Component {
   }
 
   renderView = () => {
-    let { posts, readyForSubmit, isMenuEnabled, inEditMode, post } = this.state;
+    let { posts, readyForSubmit, isMenuEnabled, inEditMode, post, images } = this.state;
 
     let viewProps = {
       submitHandler: this.handlePostSubmit,
@@ -153,7 +152,6 @@ export default class AppComponent extends React.Component {
       <ViewComponent ref="postView" {...viewProps}/>,
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
         setPosts={this.handlePostsFetch} ref="indexView"/>,
-      <PendingComponent/>,
       <ImagesComponent setImages={this.handleImagesFetch} images={images} />
     ];
 
