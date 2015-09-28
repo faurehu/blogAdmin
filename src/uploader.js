@@ -11,6 +11,11 @@ let client = new Upload('faurephoto', {
     awsImageAcl: 'private'
   },
 
+  cleanup: {
+    original: false,
+    versions: true
+  },
+
   versions: [{
     maxHeight: 1040,
     maxWidth: 1040,
