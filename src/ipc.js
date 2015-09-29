@@ -1,5 +1,6 @@
 import ipc from 'ipc';
 import parsePost from './postParser';
+import uploadImage from './uploader';
 
 let error = (err) => { console.log(err); };
 
@@ -14,6 +15,35 @@ export default (sequelize) => {
   let findPost = (arg) => {
     return new Promise((resolve, reject) => {
       sequelize.Post.findById(arg.id).then(resolve).catch(reject);
+    });
+  };
+
+  let uploadSingleImage = (arg) => {
+
+    let saveImage = (paths) => {
+      return new Promise((resolve, reject) => {
+        let image = arg;
+        image.local = null;
+        image.small = paths.small;
+        image.thumb = paths.thumb;
+        image.large = paths.large;
+        image.medium = paths.medium;
+        sequelize.Image.create(image).then(resolve).catch(reject);
+      });
+    };
+
+    return new Promise((resolve, reject) => {
+      uploadImage(arg.local).then(saveImage).then(resolve).catch(reject);
+    });
+  };
+
+  let uploadImages = (arg) => {
+    return new Promise((resolve, reject) => {
+      let promises = [];
+      arg.forEach((image) => {
+        promises.push(uploadSingleImage(image));
+      });
+      Promise.all(promises).then(resolve).catch(reject);
     });
   };
 
@@ -89,7 +119,13 @@ export default (sequelize) => {
   });
 
   ipc.on('save-images', (event, arg) => {
-    console.log(arg);
+
+    let success = (data) => {
+      console.log(data);
+      event.sender.send('images-saved', data);
+    };
+
+    uploadImages(arg).then(success).catch(error);
   });
 
 };

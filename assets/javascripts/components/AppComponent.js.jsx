@@ -34,8 +34,11 @@ export default class AppComponent extends React.Component {
         });
       }
     });
-    this.ipc.on('posts-saved', (arg) => {
+    this.ipc.on('images-saved', (arg) => {
       console.log(arg);
+      this.setState({
+        images: arg
+      });
     });
     this.state = {
       postIndex: -1,
@@ -167,6 +170,7 @@ export default class AppComponent extends React.Component {
   }
 
   render() {
+    console.log(this.state.images);
     return (
       <div className="app">
         <SidebarComponent handler={this.handleViewChange}/>
