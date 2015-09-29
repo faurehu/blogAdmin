@@ -13,7 +13,8 @@ export default class ImagesComponent extends React.Component {
     ),
     setImages: React.PropTypes.func,
     addImage: React.PropTypes.func,
-    onSave: React.PropTypes.func
+    onSave: React.PropTypes.func,
+    handleCaptionChange: React.PropTypes.func
   };
 
   constructor(props) {
@@ -48,17 +49,18 @@ export default class ImagesComponent extends React.Component {
     let images = [];
     this.props.images.forEach((image) => {
       images.push(
-        <ImageComponent image={image} key={image.id}/>
+        <ImageComponent image={image} key={image.id} index={this.props.images.indexOf(image)}
+          handleCaptionChange={this.props.handleCaptionChange}/>
       );
     });
     return images;
   }
 
   renderSaveButton() {
-    let canSave = false;
+    let canSave = true;
     this.props.images.forEach((image) => {
-      if(image.local !== undefined) {
-        canSave = true;
+      if(image.caption === undefined || (image.local === undefined && image.small === undefined && image.caption === undefined)) {
+        canSave = false;
       }
     });
     if(canSave) {

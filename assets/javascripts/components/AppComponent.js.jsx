@@ -60,6 +60,14 @@ export default class AppComponent extends React.Component {
     });
   }
 
+  handleCaptionChange = (index, e) => {
+    let images = this.state.images;
+    images[index].caption = e.target.value;
+    this.setState({
+      images: images
+    });
+  }
+
   handleContentUpdate = (updatedContent) => {
     let post = this.state.post || {};
     post.content = updatedContent;
@@ -163,14 +171,15 @@ export default class AppComponent extends React.Component {
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
         setPosts={this.handlePostsFetch} ref="indexView"/>,
       <ImagesComponent setImages={this.handleImagesFetch} images={images}
-        addImage={this.addImage} onSave={this.handleImagesSave}/>
+        addImage={this.addImage} onSave={this.handleImagesSave}
+        handleCaptionChange={this.handleCaptionChange}/>
     ];
 
     return views[this.state.view];
   }
 
   render() {
-    console.log(this.state.images);
+    console.log(this.state);
     return (
       <div className="app">
         <SidebarComponent handler={this.handleViewChange}/>
