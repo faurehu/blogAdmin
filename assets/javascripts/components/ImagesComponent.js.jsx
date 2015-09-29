@@ -14,7 +14,8 @@ export default class ImagesComponent extends React.Component {
     setImages: React.PropTypes.func,
     addImage: React.PropTypes.func,
     onSave: React.PropTypes.func,
-    handleCaptionChange: React.PropTypes.func
+    handleCaptionChange: React.PropTypes.func,
+    handleImageDelete: React.PropTypes.func
   };
 
   constructor(props) {
@@ -49,10 +50,13 @@ export default class ImagesComponent extends React.Component {
     let images = [];
     this.props.images.forEach((image) => {
       let index = this.props.images.indexOf(image);
-      images.push(
-        <ImageComponent image={image} key={index} index={index}
-          handleCaptionChange={this.props.handleCaptionChange}/>
-      );
+      if(image.delete === undefined) {
+        images.push(
+          <ImageComponent image={image} key={index} index={index}
+            handleCaptionChange={this.props.handleCaptionChange}
+            handleImageDelete={this.props.handleImageDelete}/>
+        );
+      }
     });
     return images;
   }

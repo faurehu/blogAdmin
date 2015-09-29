@@ -10,7 +10,8 @@ export default class ImageComponent extends React.Component {
       local: React.PropTypes.string
     }),
     index: React.PropTypes.number,
-    handleCaptionChange: React.PropTypes.func
+    handleCaptionChange: React.PropTypes.func,
+    handleImageDelete: React.PropTypes.func
   };
 
   constructor(props) {
@@ -20,7 +21,9 @@ export default class ImageComponent extends React.Component {
   render() {
     return (
       <div className="image">
-        <button />
+        <button onClick={this.props.handleImageDelete.bind(null, this.props.index)}>
+          x
+        </button>
         <img src={this.props.image.small || this.props.image.local}/>
         <input type="text" value={this.props.image.caption}
           onChange={this.props.handleCaptionChange.bind(null, this.props.index)}/>

@@ -108,6 +108,14 @@ export default class AppComponent extends React.Component {
     });
   }
 
+  handleImageDelete = (index) => {
+    let images = this.state.images;
+    images[index].delete = true;
+    this.setState({
+      images: images
+    });
+  }
+
   handleImagesFetch = (images) => {
     this.setState({
       images: images.map((image) => { return image.dataValues; })
@@ -165,13 +173,20 @@ export default class AppComponent extends React.Component {
       insertImage: this.insertImage
     };
 
+    let imagesProps = {
+      setImages: this.handleImagesFetch,
+      images: images,
+      addImage: this.addImage,
+      onSave: this.handleImagesSave,
+      handleCaptionChange: this.handleCaptionChange,
+      handleImageDelete: this.handleImageDelete
+    };
+
     let views = [
       <ViewComponent ref="postView" {...viewProps}/>,
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
         setPosts={this.handlePostsFetch} ref="indexView"/>,
-      <ImagesComponent setImages={this.handleImagesFetch} images={images}
-        addImage={this.addImage} onSave={this.handleImagesSave}
-        handleCaptionChange={this.handleCaptionChange}/>
+      <ImagesComponent {...imagesProps}/>
     ];
 
     return views[this.state.view];
