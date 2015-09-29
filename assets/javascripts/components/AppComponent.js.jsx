@@ -13,6 +13,30 @@ export default class AppComponent extends React.Component {
     super(props);
     this.ipc = global.ipc;
     this.jQuery = global.jQuery;
+    this.ipc.on('post-deleted', (arg) => {
+      if (arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.on('post-submit-reply', (arg) => {
+      if (arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.on('post-updated', (arg) => {
+      if(arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.on('posts-saved', (arg) => {
+      console.log(arg);
+    });
     this.state = {
       postIndex: -1,
       isMenuEnabled: false,
@@ -57,24 +81,10 @@ export default class AppComponent extends React.Component {
   }
 
   handlePostDelete = (id) => {
-    this.ipc.on('post-deleted', (arg) => {
-      if (arg === 'success') {
-        this.setState({
-          view: 1
-        });
-      }
-    });
     this.ipc.send('delete-post', id);
   }
 
   handlePostSubmit = () => {
-    this.ipc.on('post-submit-reply', (arg) => {
-      if (arg === 'success') {
-        this.setState({
-          view: 1
-        });
-      }
-    });
     this.ipc.send('post-submit', {
       content: this.state.post.content,
       title: this.state.post.title,
@@ -95,17 +105,10 @@ export default class AppComponent extends React.Component {
   }
 
   handleImagesSave = () => {
-    console.log('yo');
+    this.ipc.send('save-images', this.state.images);
   }
 
   handlePostUpdate = () => {
-    this.ipc.on('post-updated', (arg) => {
-      if(arg === 'success') {
-        this.setState({
-          view: 1
-        });
-      }
-    });
     this.ipc.send('update-post', {
       content: this.state.post.content,
       title: this.state.post.title,

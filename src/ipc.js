@@ -61,7 +61,7 @@ export default (sequelize) => {
 
   });
 
-  ipc.on('update-post', function(event, arg) {
+  ipc.on('update-post', (event, arg) => {
 
     let success = () => {
       event.sender.send('post-updated', 'success');
@@ -86,6 +86,10 @@ export default (sequelize) => {
     };
 
     sequelize.Image.findAll().then(success).catch(error);
+  });
+
+  ipc.on('save-images', (event, arg) => {
+    console.log(arg);
   });
 
 };
