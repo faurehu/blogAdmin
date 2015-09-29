@@ -35,7 +35,6 @@ export default class AppComponent extends React.Component {
       }
     });
     this.ipc.on('images-saved', (arg) => {
-      console.log(arg);
       this.setState({
         images: arg
       });
@@ -179,7 +178,6 @@ export default class AppComponent extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     return (
       <div className="app">
         <SidebarComponent handler={this.handleViewChange}/>
@@ -217,8 +215,7 @@ export default class AppComponent extends React.Component {
   addImage = (path) => {
     let images = this.state.images;
     images.push({
-      local: path,
-      id: images.length
+      local: path
     });
     this.setState({
       images: images

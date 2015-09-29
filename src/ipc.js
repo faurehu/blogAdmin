@@ -41,7 +41,9 @@ export default (sequelize) => {
     return new Promise((resolve, reject) => {
       let promises = [];
       arg.forEach((image) => {
-        promises.push(uploadSingleImage(image));
+        if(image.local) {
+          promises.push(uploadSingleImage(image));
+        }
       });
       Promise.all(promises).then(resolve).catch(reject);
     });
@@ -120,9 +122,10 @@ export default (sequelize) => {
 
   ipc.on('save-images', (event, arg) => {
 
-    let success = (data) => {
-      console.log(data);
-      event.sender.send('images-saved', data);
+    let success = () => {
+      sequelize.Image.findAll().then((data) => {
+        event.sender.send('images-saved', data);
+      });
     };
 
     uploadImages(arg).then(success).catch(error);

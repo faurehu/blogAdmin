@@ -48,8 +48,9 @@ export default class ImagesComponent extends React.Component {
   renderImages() {
     let images = [];
     this.props.images.forEach((image) => {
+      let index = this.props.images.indexOf(image);
       images.push(
-        <ImageComponent image={image} key={image.id} index={this.props.images.indexOf(image)}
+        <ImageComponent image={image} key={index} index={index}
           handleCaptionChange={this.props.handleCaptionChange}/>
       );
     });
