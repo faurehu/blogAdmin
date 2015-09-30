@@ -35,6 +35,9 @@ export default class AppComponent extends React.Component {
       }
     });
     this.ipc.on('images-saved', (arg) => {
+      console.log('yo', arg.map((image) => {
+        return image.dataValues;
+      }));
       this.setState({
         images: arg.map((image) => {
           return image.dataValues;
@@ -200,6 +203,7 @@ export default class AppComponent extends React.Component {
   }
 
   render() {
+    console.log('state', this.state.images);
     return (
       <div className="app">
         <SidebarComponent handler={this.handleViewChange}/>

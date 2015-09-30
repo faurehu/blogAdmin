@@ -20,13 +20,21 @@ export default class ImageComponent extends React.Component {
   }
 
   render() {
+    let value;
+    if(this.props.image.edit === '') {
+      value = '';
+    } else if (this.props.image.edit !== undefined) {
+      value = this.props.image.edit;
+    } else {
+      value = this.props.image.caption;
+    }
     return (
       <div className="image">
         <button onClick={this.props.handleImageDelete.bind(null, this.props.index)}>
           x
         </button>
         <img src={this.props.image.small || this.props.image.local}/>
-        <input type="text" value={this.props.image.edit || this.props.image.caption}
+        <input type="text" value={value}
           onChange={this.props.handleCaptionChange.bind(null, this.props.index)}/>
       </div>
     );
