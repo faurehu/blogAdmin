@@ -3,7 +3,6 @@ import SidebarComponent from './SidebarComponent';
 import ViewComponent from './ViewComponent';
 import IndexComponent from './IndexComponent';
 import ImagesComponent from './ImagesComponent';
-import PendingComponent from './PendingComponent';
 
 export default class AppComponent extends React.Component {
 
@@ -14,6 +13,34 @@ export default class AppComponent extends React.Component {
     super(props);
     this.ipc = global.ipc;
     this.jQuery = global.jQuery;
+    this.ipc.on('post-deleted', (arg) => {
+      if (arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.on('post-submit-reply', (arg) => {
+      if (arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.on('post-updated', (arg) => {
+      if(arg === 'success') {
+        this.setState({
+          view: 1
+        });
+      }
+    });
+    this.ipc.on('images-saved', (arg) => {
+      this.setState({
+        images: arg.map((image) => {
+          return image.dataValues;
+        })
+      });
+    });
     this.state = {
       postIndex: -1,
       isMenuEnabled: false,
@@ -31,6 +58,19 @@ export default class AppComponent extends React.Component {
       readyForSubmit: false,
       inEditMode: false,
       view: 0
+    });
+  }
+
+  handleCaptionChange = (index, e) => {
+    let images = this.state.images;
+    let image = images[index];
+    if(image.id !== undefined) {
+      image.edit = e.target.value;
+    } else {
+      image.caption = e.target.value;
+    }
+    this.setState({
+      images: images
     });
   }
 
@@ -58,24 +98,10 @@ export default class AppComponent extends React.Component {
   }
 
   handlePostDelete = (id) => {
-    this.ipc.on('post-deleted', (arg) => {
-      if (arg === 'success') {
-        this.setState({
-          view: 1
-        });
-      }
-    });
     this.ipc.send('delete-post', id);
   }
 
   handlePostSubmit = () => {
-    this.ipc.on('post-submit-reply', (arg) => {
-      if (arg === 'success') {
-        this.setState({
-          view: 1
-        });
-      }
-    });
     this.ipc.send('post-submit', {
       content: this.state.post.content,
       title: this.state.post.title,
@@ -89,14 +115,25 @@ export default class AppComponent extends React.Component {
     });
   }
 
-  handlePostUpdate = () => {
-    this.ipc.on('post-updated', (arg) => {
-      if(arg === 'success') {
-        this.setState({
-          view: 1
-        });
-      }
+  handleImageDelete = (index) => {
+    let images = this.state.images;
+    images[index].delete = true;
+    this.setState({
+      images: images
     });
+  }
+
+  handleImagesFetch = (images) => {
+    this.setState({
+      images: images.map((image) => { return image.dataValues; })
+    });
+  }
+
+  handleImagesSave = () => {
+    this.ipc.send('save-images', this.state.images);
+  }
+
+  handlePostUpdate = () => {
     this.ipc.send('update-post', {
       content: this.state.post.content,
       title: this.state.post.title,
@@ -125,7 +162,7 @@ export default class AppComponent extends React.Component {
   }
 
   renderView = () => {
-    let { posts, readyForSubmit, isMenuEnabled, inEditMode, post } = this.state;
+    let { posts, readyForSubmit, isMenuEnabled, inEditMode, post, images } = this.state;
 
     let viewProps = {
       submitHandler: this.handlePostSubmit,
@@ -143,12 +180,20 @@ export default class AppComponent extends React.Component {
       insertImage: this.insertImage
     };
 
+    let imagesProps = {
+      setImages: this.handleImagesFetch,
+      images: images,
+      addImage: this.addImage,
+      onSave: this.handleImagesSave,
+      handleCaptionChange: this.handleCaptionChange,
+      handleImageDelete: this.handleImageDelete
+    };
+
     let views = [
       <ViewComponent ref="postView" {...viewProps}/>,
       <IndexComponent getPostEditor={this.getPostEditor} posts={posts}
         setPosts={this.handlePostsFetch} ref="indexView"/>,
-      <PendingComponent/>,
-      <ImagesComponent/>
+      <ImagesComponent {...imagesProps}/>
     ];
 
     return views[this.state.view];
@@ -186,6 +231,16 @@ export default class AppComponent extends React.Component {
     post.content = `${preContent}![](${path})${postContent}`;
     this.setState({
       post: post
+    });
+  }
+
+  addImage = (path) => {
+    let images = this.state.images;
+    images.push({
+      local: path
+    });
+    this.setState({
+      images: images
     });
   }
 }

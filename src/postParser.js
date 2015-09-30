@@ -21,7 +21,7 @@ let parsePost = (post) => {
 
   let replaceURL = (strings) => {
     return new Promise((resolve) => {
-      post.content = post.content.replace(strings.old, strings.new);
+      post.content = post.content.replace(strings.old, strings.medium);
       resolve();
     });
   };

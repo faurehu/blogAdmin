@@ -46,7 +46,13 @@ let uploadImage = (path) => {
           if (err) {
             reject(err);
           } else {
-            resolve({old: path, new: versions[1].url});
+            resolve({
+              old: path,
+              large: versions[0].url,
+              medium: versions[1].url,
+              small: versions[2].url,
+              thumb: versions[3].url
+            });
           }
         });
       } else {

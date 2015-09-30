@@ -14,13 +14,13 @@ let sequelize = new Sequelize(config.db.name, config.db.user, config.db.password
 });
 
 let models = [
-  'Post'
+  'Post',
+	'Image'
 ];
 
 models.forEach(model => {
   module.exports[model] = sequelize.import(`${__dirname}/${model}`);
 });
-
 
 sequelize.sync()
   .error(error => {

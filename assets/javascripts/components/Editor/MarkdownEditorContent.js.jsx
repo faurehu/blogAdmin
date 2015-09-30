@@ -16,7 +16,7 @@ export default class MarkdownEditorContent extends React.Component {
 
   componentDidMount() {
     if (this.refs.editor != null) {
-      let holder = document.getElementById('holder');
+      let holder = document.getElementById('editor-holder');
       holder.ondragover = () => {
         return false;
       };
@@ -58,7 +58,7 @@ export default class MarkdownEditorContent extends React.Component {
 
   render() {
     return (
-      <textarea ref="editor" className="md-editor-textarea" id="holder"
+      <textarea ref="editor" className="md-editor-textarea" id="editor-holder"
         value={this.props.content}
         onChange={this.props.onChangeHandler}
         onClick={this.props.handleSelection.bind(null, null)}
