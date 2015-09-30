@@ -62,10 +62,10 @@ export default class ImagesComponent extends React.Component {
   }
 
   renderSaveButton() {
-    let canSave = true;
+    let canSave = false;
     this.props.images.forEach((image) => {
-      if(image.caption === undefined || (image.local === undefined && image.small === undefined && image.caption === undefined)) {
-        canSave = false;
+      if(image.delete || image.local !== undefined) {
+        canSave = true;
       }
     });
     if(canSave) {
