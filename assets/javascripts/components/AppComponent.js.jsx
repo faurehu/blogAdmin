@@ -61,7 +61,12 @@ export default class AppComponent extends React.Component {
 
   handleCaptionChange = (index, e) => {
     let images = this.state.images;
-    images[index].caption = e.target.value;
+    let image = images[index];
+    if(image.id !== undefined) {
+      image.edit = e.target.value;
+    } else {
+      image.caption = e.target.value;
+    }
     this.setState({
       images: images
     });

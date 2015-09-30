@@ -64,7 +64,8 @@ export default class ImagesComponent extends React.Component {
   renderSaveButton() {
     let canSave = false;
     this.props.images.forEach((image) => {
-      if(image.delete || image.local !== undefined) {
+      if(image.delete || image.local !== undefined ||
+      (image.edit !== undefined && image.edit !== image.content)) {
         canSave = true;
       }
     });

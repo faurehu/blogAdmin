@@ -7,7 +7,8 @@ export default class ImageComponent extends React.Component {
     image: React.PropTypes.shape({
       caption: React.PropTypes.string,
       small: React.PropTypes.string,
-      local: React.PropTypes.string
+      local: React.PropTypes.string,
+      edit: React.PropTypes.string
     }),
     index: React.PropTypes.number,
     handleCaptionChange: React.PropTypes.func,
@@ -25,7 +26,7 @@ export default class ImageComponent extends React.Component {
           x
         </button>
         <img src={this.props.image.small || this.props.image.local}/>
-        <input type="text" value={this.props.image.caption}
+        <input type="text" value={this.props.image.edit || this.props.image.caption}
           onChange={this.props.handleCaptionChange.bind(null, this.props.index)}/>
       </div>
     );
