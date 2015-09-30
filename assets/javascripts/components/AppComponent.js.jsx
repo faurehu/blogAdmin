@@ -36,7 +36,9 @@ export default class AppComponent extends React.Component {
     });
     this.ipc.on('images-saved', (arg) => {
       this.setState({
-        images: arg
+        images: arg.map((image) => {
+          return image.dataValues;
+        })
       });
     });
     this.state = {

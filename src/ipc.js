@@ -18,6 +18,12 @@ export default (sequelize) => {
     });
   };
 
+  let findImage = (arg) => {
+    return new Promise((resolve, reject) => {
+      sequelize.Image.findById(arg.id).then(resolve).catch(reject);
+    });
+  };
+
   let uploadSingleImage = (arg) => {
 
     let saveImage = (paths) => {
@@ -37,11 +43,39 @@ export default (sequelize) => {
     });
   };
 
-  let uploadImages = (arg) => {
+  let destroySingleImage = (arg) => {
+
+    let destroy = (data) => {
+      data.destroy();
+    };
+
+    return new Promise((resolve, reject) => {
+      findImage(arg).then(destroy).then(resolve).then(reject);
+    });
+  };
+
+  let editSingleImage = (arg) => {
+
+    let update = (data) => {
+      data.updateAttributes({
+        caption: arg.edit
+      });
+    };
+
+    return new Promise((resolve, reject) => {
+      findImage(arg).then(update).then(resolve).then(reject);
+    });
+  };
+
+  let handleImages = (arg) => {
     return new Promise((resolve, reject) => {
       let promises = [];
       arg.forEach((image) => {
-        if(image.local) {
+        if(image.delete) {
+          promises.push(destroySingleImage(image));
+        } else if (image.edit && image.content !== image.edit) {
+          promises.push(editSingleImage(image));
+        } else if (image.local) {
           promises.push(uploadSingleImage(image));
         }
       });
@@ -128,7 +162,7 @@ export default (sequelize) => {
       });
     };
 
-    uploadImages(arg).then(success).catch(error);
+    handleImages(arg).then(success).catch(error);
   });
 
 };
