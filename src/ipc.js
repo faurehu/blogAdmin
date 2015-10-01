@@ -57,13 +57,14 @@ export default (sequelize) => {
   let editSingleImage = (arg) => {
 
     let update = (data) => {
-      data.updateAttributes({
-        caption: arg.edit
+      return new Promise((resolve, reject) => {
+        data.updateAttributes({
+          caption: arg.edit
+        }).then(resolve).catch(reject);
       });
     };
-
     return new Promise((resolve, reject) => {
-      findImage(arg).then(update).then(resolve).then(reject);
+      findImage(arg).then(update).then(resolve).catch(reject);
     });
   };
 
