@@ -1,6 +1,7 @@
 import traverse from 'traverse';
 import marked from 'marked-ast';
 import uploadImage from './uploader';
+import fs from 'fs';
 
 let traverseTree = (tree) => {
   return new Promise((resolve, reject) => {
@@ -8,7 +9,11 @@ let traverseTree = (tree) => {
     traverse(tree).forEach((node) => {
       if(!Array.isArray(node) && typeof node === 'object' && node !== null
         && node.type === 'image') {
-        promises.push(uploadImage(node.href));
+        fs.exists(node.href, (exists) => {
+          if(exists) {
+            promises.push(uploadImage(node.href));
+          }
+        });
       }
     });
     Promise.all(promises).then(resolve).catch(reject);
