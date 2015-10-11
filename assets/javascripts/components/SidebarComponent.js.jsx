@@ -4,15 +4,16 @@ export default class SidebarComponent extends React.Component {
 
   static displayName = 'Sidebar';
   static propTypes = {
-    handler: React.PropTypes.func
+    handler: React.PropTypes.func,
+    active: React.PropTypes.number
   };
 
   constructor(props) {
     super(props);
     this.containers = [
-      'create',
-      'index',
-      'images'
+      'Create',
+      'Index',
+      'Images'
     ];
   }
 
@@ -21,11 +22,11 @@ export default class SidebarComponent extends React.Component {
     this.containers.forEach((container) => {
       let index = this.containers.indexOf(container);
       choices.push(
-        <button onClick={this.props.handler.bind(null, index)}
-          className="sidebar-button"
-          key={index}>
+        <li onClick={this.props.handler.bind(null, index)}
+          key={index} role="presentation"
+          className={this.props.active === index ? 'active' : ''}>
           {container}
-        </button>
+        </li>
       );
     });
     return choices;
@@ -33,9 +34,9 @@ export default class SidebarComponent extends React.Component {
 
   render() {
     return (
-      <div className="sidebar">
+      <ul className="sidebar nav nav-pills nav-stacked">
         {this.renderChoices()}
-      </div>
+      </ul>
     );
   }
 

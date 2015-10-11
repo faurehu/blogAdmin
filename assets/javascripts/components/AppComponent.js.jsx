@@ -202,7 +202,7 @@ export default class AppComponent extends React.Component {
   render() {
     return (
       <div className="app">
-        <SidebarComponent handler={this.handleViewChange}/>
+        <SidebarComponent handler={this.handleViewChange} active={this.state.view}/>
         {this.renderView()}
       </div>
     );

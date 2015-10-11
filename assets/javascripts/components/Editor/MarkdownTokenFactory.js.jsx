@@ -38,7 +38,7 @@ export class SubHeaderMarkdownToken extends HeaderMarkdownToken {
 
 export class UrlMarkdownToken extends RegularMarkdownToken {
   applyTokenTo(_text) {
-    return `[${_text}]($(_text))`;
+    return `[${_text}](${_text})`;
   }
 }
 

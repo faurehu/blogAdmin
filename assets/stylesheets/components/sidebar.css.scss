@@ -2,10 +2,20 @@
   height: 100%;
   position: fixed;
   width: 200px;
-  border: 1px solid black;
+  border-right: 1px solid #ddd;
 
-  .sidebar-button {
-    width: 100%;
-    display: block;
+  li {
+    height: 50px;
+    margin: 0;
+    line-height: 50px;
+    text-align: center;
+
+    &:hover {
+      background: 1px solid rgb(154, 242, 216);
+    }
+  }
+
+  .active {
+    border: 1px solid rgb(154, 242, 216);
   }
 }
