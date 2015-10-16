@@ -10,7 +10,10 @@ let sequelize = new Sequelize(config.db.name, config.db.user, config.db.password
 	maxConcurrentQueries: 100,
 	dialect: config.db.dialect,
 	pool: { maxConnections: 5, maxIdleTime: 30},
-	language: 'en'
+	language: 'en',
+	dialectOptions: {
+    ssl: true
+  }
 });
 
 let models = [

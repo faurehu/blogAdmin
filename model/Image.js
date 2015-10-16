@@ -26,6 +26,14 @@ module.exports = function(sequelize, DataTypes) {
 
     small: {
       type: DataTypes.STRING
+    },
+
+    height: {
+      type: DataTypes.INTEGER
+    },
+
+    width: {
+      type: DataTypes.INTEGER
     }
 
   });

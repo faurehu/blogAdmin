@@ -1,8 +1,115 @@
 import ipc from 'ipc';
-import parsePost from './postParser';
-import uploadImage from './uploader';
+import traverse from 'traverse';
+import fs from 'fs';
+import marked from 'marked-ast';
+import Upload from 's3-uploader';
 
-let error = (err) => { console.log(err); };
+let client = new Upload('faurephoto', {
+  aws: {
+    region: 'us-west-2',
+    acl: 'public-read'
+  },
+
+  original: {
+    awsImageAcl: 'private'
+  },
+
+  cleanup: {
+    original: false,
+    versions: true
+  },
+
+  versions: [{
+    maxHeight: 1040,
+    maxWidth: 1040,
+    format: 'jpg',
+    suffix: '-large',
+    quality: 80
+  }, {
+    maxWidth: 780,
+    aspect: '3:2!h',
+    suffix: '-medium'
+  }, {
+    maxWidth: 320,
+    aspect: '16:9!h',
+    suffix: '-small'
+  }, {
+    maxHeight: 100,
+    aspect: '1:1',
+    format: 'png',
+    suffix: '-thumb'
+  }]
+});
+
+let uploadImage = (path) => {
+  return new Promise((resolve, reject) => {
+    client.upload(path, {}, (err, versions) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({
+          old: path,
+          large: versions[0].url,
+          medium: versions[1].url,
+          small: versions[2].url,
+          thumb: versions[3].url,
+          width: versions[0].width,
+          height: versions[0].height
+        });
+      }
+    });
+  });
+};
+
+let traverseTree = (tree) => {
+  return new Promise((resolve, reject) => {
+    let promises = [];
+    traverse(tree).forEach((node) => {
+      if(!Array.isArray(node) && typeof node === 'object' && node !== null
+        && node.type === 'image') {
+        try {
+          let stats = fs.statSync(node.href);
+          if (stats.isFile()) {
+            promises.push(uploadImage(node.href));
+          }
+        } catch (e) {
+          return;
+        }
+      }
+    });
+    Promise.all(promises).then(resolve).catch(reject);
+  });
+};
+
+let parsePost = (post) => {
+
+  let ast = marked.parse(post.content);
+
+  let replaceURL = (strings) => {
+    return new Promise((resolve) => {
+      post.content = post.content.replace(strings.old, strings.medium);
+      resolve();
+    });
+  };
+
+  let replace = (array) => {
+    return new Promise((resolve, reject) => {
+      let replacePromises = [];
+      array.forEach((node) => {
+        replacePromises.push(replaceURL(node));
+      });
+      Promise.all(replacePromises)
+      .then(() => {
+        return post;
+      })
+      .then(resolve).catch(reject);
+    });
+  };
+
+  return new Promise((resolve, reject) => {
+    traverseTree(ast).then(replace).then(resolve).catch(reject);
+  });
+};
 
 export default (sequelize) => {
 
@@ -34,6 +141,8 @@ export default (sequelize) => {
         image.thumb = paths.thumb;
         image.large = paths.large;
         image.medium = paths.medium;
+        image.width = paths.width;
+        image.height = paths.height;
         sequelize.Image.create(image).then(resolve).catch(reject);
       });
     };
@@ -90,8 +199,11 @@ export default (sequelize) => {
       event.sender.send('post-submit-reply', 'success');
     };
 
-    parsePost(arg).then(submitPost).then(success).catch(error);
+    let error = (err) => {
+      console.log(err);
+    };
 
+    parsePost(arg).then(submitPost).then(success).catch(error);
   });
 
   ipc.on('fetch-all-posts', (event) => {
@@ -100,8 +212,11 @@ export default (sequelize) => {
       event.sender.send('posts-fetched', data);
     };
 
-    sequelize.Post.findAll().then(success).catch(error);
+    let error = (err) => {
+      console.log(err);
+    };
 
+    sequelize.Post.findAll().then(success).catch(error);
   });
 
   ipc.on('fetch-post', (event, arg) => {
@@ -110,8 +225,11 @@ export default (sequelize) => {
       event.sender.send('post-fetched', data);
     };
 
-    sequelize.Post.findById(arg).then(success).catch(error);
+    let error = (err) => {
+      console.log(err);
+    };
 
+    sequelize.Post.findById(arg).then(success).catch(error);
   });
 
   ipc.on('delete-post', (event, arg) => {
@@ -120,18 +238,25 @@ export default (sequelize) => {
       event.sender.send('post-deleted', 'success');
     };
 
+    let error = (err) => {
+      console.log(err);
+    };
+
     let found = (data) => {
       data.destroy().then(success).catch(error);
     };
 
     sequelize.Post.findById(arg).then(found).catch(error);
-
   });
 
   ipc.on('update-post', (event, arg) => {
 
     let success = () => {
       event.sender.send('post-updated', 'success');
+    };
+
+    let error = (err) => {
+      console.log(err);
     };
 
     let found = (data) => {
@@ -143,13 +268,16 @@ export default (sequelize) => {
     };
 
     parsePost(arg).then(findPost).then(found).catch(error);
-
   });
 
   ipc.on('fetch-all-images', (event) => {
 
     let success = (data) => {
       event.sender.send('images-fetched', data);
+    };
+
+    let error = (err) => {
+      console.log(err);
     };
 
     sequelize.Image.findAll().then(success).catch(error);
@@ -161,6 +289,10 @@ export default (sequelize) => {
       sequelize.Image.findAll().then((data) => {
         event.sender.send('images-saved', data);
       });
+    };
+
+    let error = (err) => {
+      console.log(err);
     };
 
     handleImages(arg).then(success).catch(error);
